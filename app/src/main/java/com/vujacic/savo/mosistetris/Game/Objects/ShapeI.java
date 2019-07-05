@@ -21,6 +21,7 @@ public class ShapeI extends GameObject {
         setGridLocation();
         setRectLocation();
         setWallKickData();
+        setCentri();
     }
 
     @Override
@@ -71,8 +72,8 @@ public class ShapeI extends GameObject {
 //        trans.set(0,2,-gridLocation[4]);
 //        trans.set(1,2,-gridLocation[5]);
 //        mnoziti=transR.mult(rotate).mult(trans);
-        int centarx = gridLocation[4];
-        int centary = gridLocation[5];
+        int centarx = gridLocation[centri[0]];
+        int centary = gridLocation[centri[1]];
         for(int i = 0 ; i< 8 ; i+=2){
 //            SimpleMatrix s = mnoziti.mult(new SimpleMatrix(3,1,true,new float[]{gridLocation[i],gridLocation[i+1],1}));
 //            gridLocation[i] = (int)s.get(0,0);
@@ -114,6 +115,12 @@ public class ShapeI extends GameObject {
             {{0,0},{2,0},{-1,0},{2,-1},{-1,2}},
             {{0,0},{1,0},{-2,0},{1,2},{-2,-1}}
         };
+    }
+
+    @Override
+    public void setCentri() {
+        centri[0]=4;
+        centri[1]=5;
     }
 
 }

@@ -15,6 +15,12 @@ import android.widget.Toast;
 
 import com.vujacic.savo.mosistetris.Game.Objects.GameObject;
 import com.vujacic.savo.mosistetris.Game.Objects.ShapeI;
+import com.vujacic.savo.mosistetris.Game.Objects.ShapeJ;
+import com.vujacic.savo.mosistetris.Game.Objects.ShapeL;
+import com.vujacic.savo.mosistetris.Game.Objects.ShapeO;
+import com.vujacic.savo.mosistetris.Game.Objects.ShapeS;
+import com.vujacic.savo.mosistetris.Game.Objects.ShapeT;
+import com.vujacic.savo.mosistetris.Game.Objects.ShapeZ;
 import com.vujacic.savo.mosistetris.Game.TetrisGrid.TetrisGrid;
 
 import java.util.LinkedList;
@@ -175,7 +181,9 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
         tetrisGrid.drawGrid(mCanvas);
         //mCanvas.translate(5+x,y);
         //mCanvas.rotate(alfa);
-        gm.draw(mCanvas,mPaintRed);
+
+//        gm.draw(mCanvas,mPaintRed); verovatno ne treba
+
         //mCanvas.translate(width,height+y);
 //        mCanvas.drawRect(0,0,width,height,mPaint);
 //        mCanvas.translate(50,50);
@@ -250,7 +258,7 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
         mPaintRed.setStyle(Paint.Style.FILL_AND_STROKE);
         mPaintRed.setColor(Color.RED);
 
-        gm=new ShapeI(tetrisGrid);
+        gm=new ShapeZ(tetrisGrid);
     }
 
     void draw(){

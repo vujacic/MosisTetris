@@ -11,11 +11,12 @@ import org.ejml.simple.SimpleMatrix;
 public abstract class GameObject {
     Point[] location;
     int[] gridLocation;
-    int[][][] wallKickData;
+    //int[][][] wallKickData;
     float velocity;
     long lastDrawNanoTime=-1;
     TetrisGrid grid;
     int state = 0;//0 - pocetno, 1 - rota desno, 2 - 2 rota desno, 3 - 3 rota desno
+    int centri[] = new int[2];
 
     public GameObject() {
         location=new Point[8];
@@ -35,7 +36,7 @@ public abstract class GameObject {
     //public abstract void rotate();
     //public abstract void translate(int x,int y);
     public abstract void state();
-    public abstract void setWallKickData();
+    public void setWallKickData(){};
 
 
     public static SimpleMatrix trans = new SimpleMatrix(3,3,true,new float[]{1,0,-1,0,1,-1,0,0,1});
@@ -43,14 +44,17 @@ public abstract class GameObject {
     public static SimpleMatrix transR = new SimpleMatrix(3,3,true,new float[]{1,0,1,0,1,1,0,0,1});
 
     public void rotate(){
-        int centarx = gridLocation[4];
-        int centary = gridLocation[5];
+        int centarx = gridLocation[centri[0]];
+        int centary = gridLocation[centri[1]];
         for(int i = 0 ; i< 8 ; i+=2){
             int xp = gridLocation[i]- centarx;
             int yp = gridLocation[i+1] - centary;
 
-//            gridLocation[i] = yp + centarx + stateCorrection[state][0];
-//            gridLocation[i+1] = -xp + centary + stateCorrection[state][1];
+            gridLocation[i] = yp + centarx;
+            gridLocation[i+1] = -xp + centary;
+        }
+        if(!wallKick()){
+            return;
         }
         state = (state + 1) % 4;
         this.grid.setAll(this.gridLocation);
@@ -84,5 +88,14 @@ public abstract class GameObject {
         this.gridLocation= position.clone();
         this.grid.setAll(this.gridLocation);
     }
+
+    int[][][] wallKickData = new int[][][]{
+        {{0,0},{-1,0},{-1,-1},{0,2},{-1,2}},
+        {{0,0},{1,0},{1,1},{0,-2},{1,-2}},
+        {{0,0},{1,0},{1,-1},{0,2},{1,2}},
+        {{0,0},{-1,0},{-1,1},{0,-2},{-1,2}}
+    };
+
+    public abstract void setCentri();
 
 }

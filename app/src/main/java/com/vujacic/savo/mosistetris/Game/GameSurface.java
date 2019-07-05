@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Handler;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceView;
 import android.view.SurfaceHolder;
@@ -96,27 +97,31 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
         if(!queue.isEmpty())
         {
             queue.remove();
-            alfa+=90;
+            //alfa+=90;
+            gm.rotate();
         }
         cumulativno+=elapsed;
         if(cumulativno/1000000>1000) {
-            if (y < 20) {
-                y += 1;
-            }
-            else{
-                y=-2;
-            }
+//            if (y < 20) {
+//                y += 1;
+                gm.translate(1,0);
+//            }
+//            else{
+//                y=-2;
+//            }
             cumulativno=0;
         }
         if(!queueL.isEmpty())
         {
             queueL.remove();
             x-=1;
+            gm.translate(0,-1);
         }
         if(!queueR.isEmpty())
         {
             queueR.remove();
             x+=1;
+            gm.translate(0,1);
         }
     }
 
@@ -168,8 +173,8 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
 //            }
 //        }
         tetrisGrid.drawGrid(mCanvas);
-        mCanvas.translate(5+x,y);
-        mCanvas.rotate(alfa);
+        //mCanvas.translate(5+x,y);
+        //mCanvas.rotate(alfa);
         gm.draw(mCanvas,mPaintRed);
         //mCanvas.translate(width,height+y);
 //        mCanvas.drawRect(0,0,width,height,mPaint);
@@ -245,7 +250,7 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
         mPaintRed.setStyle(Paint.Style.FILL_AND_STROKE);
         mPaintRed.setColor(Color.RED);
 
-        gm=new ShapeI();
+        gm=new ShapeI(tetrisGrid);
     }
 
     void draw(){

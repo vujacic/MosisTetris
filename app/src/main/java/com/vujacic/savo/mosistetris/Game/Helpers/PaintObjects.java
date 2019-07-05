@@ -44,7 +44,8 @@ public class PaintObjects {
 
             black = new Paint();
             black.setStyle(Paint.Style.STROKE);
-            black.setColor(Color.parseColor("#000000"));
+            black.setStrokeWidth(0.1f);
+            black.setColor(Color.parseColor("#FFFFFF"));
         }
     }
 }

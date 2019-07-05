@@ -17,6 +17,7 @@ public abstract class GameObject {
     TetrisGrid grid;
     int state = 0;//0 - pocetno, 1 - rota desno, 2 - 2 rota desno, 3 - 3 rota desno
     int centri[] = new int[2];
+    Paint paint;
 
     public GameObject() {
         location=new Point[8];
@@ -57,7 +58,7 @@ public abstract class GameObject {
             return;
         }
         state = (state + 1) % 4;
-        this.grid.setAll(this.gridLocation);
+        this.grid.setAll(this.gridLocation, this.paint);
         }
 
     public boolean wallKick() {
@@ -86,7 +87,7 @@ public abstract class GameObject {
             return;
         }
         this.gridLocation= position.clone();
-        this.grid.setAll(this.gridLocation);
+        this.grid.setAll(this.gridLocation, this.paint);
     }
 
     int[][][] wallKickData = new int[][][]{
@@ -97,5 +98,6 @@ public abstract class GameObject {
     };
 
     public abstract void setCentri();
+    public abstract void setPaint();
 
 }

@@ -9,6 +9,6 @@ public class TetrisGridObject {
     public Paint paintObject;
 
     public TetrisGridObject (){
-        this.paintObject = PaintObjects.PaintColors.lblue;
+        this.paintObject = PaintObjects.PaintColors.grey;
     }
 }

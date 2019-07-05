@@ -83,15 +83,15 @@ public class TetrisGrid {
         this.grid[vrsta*x + kolona].paintObject = p;
     }
 
-    public void setAll(int position[]) {
+    public void setAll(int position[], Paint p) {
         //prvo ocisti
         for(int i = 0; i<8 ; i+=2){
-            setOne(lastState[i],lastState[i+1],0, PaintObjects.PaintColors.lblue);
+            setOne(lastState[i],lastState[i+1],0, PaintObjects.PaintColors.grey);
         }
         lastState = position.clone();
 
         for(int i = 0; i<8 ; i+=2){
-            setOne(position[i],position[i+1],1, PaintObjects.PaintColors.red);
+            setOne(position[i],position[i+1],1, p);
         }
     }
 

@@ -3,6 +3,7 @@ package com.vujacic.savo.mosistetris.Game.Objects;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 
+import com.vujacic.savo.mosistetris.Game.Helpers.PaintObjects;
 import com.vujacic.savo.mosistetris.Game.TetrisGrid.TetrisGrid;
 
 public class ShapeT extends GameObject {
@@ -12,6 +13,7 @@ public class ShapeT extends GameObject {
         //setRectLocation();
         setWallKickData();
         setCentri();
+        setPaint();
     }
 
     @Override
@@ -64,5 +66,10 @@ public class ShapeT extends GameObject {
     public void setCentri() {
         centri[0]=4;
         centri[1]=5;
+    }
+
+    @Override
+    public void setPaint() {
+        this.paint = PaintObjects.PaintColors.purple;
     }
 }

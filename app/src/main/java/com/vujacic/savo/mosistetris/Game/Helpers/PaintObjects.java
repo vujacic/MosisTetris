@@ -15,6 +15,7 @@ public class PaintObjects {
         public static Paint orange;
         public static Paint white;
         public static Paint black;
+        public static Paint grey;
 
         static {
             lblue = new Paint();
@@ -46,6 +47,10 @@ public class PaintObjects {
             black.setStyle(Paint.Style.STROKE);
             black.setStrokeWidth(0.1f);
             black.setColor(Color.parseColor("#FFFFFF"));
+
+            grey = new Paint(lblue);
+            grey.setColor(Color.parseColor("#646a75"));
+            grey.setAlpha(100);
         }
     }
 }

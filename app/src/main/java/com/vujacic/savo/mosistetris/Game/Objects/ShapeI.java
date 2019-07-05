@@ -4,6 +4,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Point;
 
+import com.vujacic.savo.mosistetris.Game.Helpers.PaintObjects;
 import com.vujacic.savo.mosistetris.Game.TetrisGrid.TetrisGrid;
 
 import org.ejml.simple.SimpleMatrix;
@@ -22,6 +23,7 @@ public class ShapeI extends GameObject {
         setRectLocation();
         setWallKickData();
         setCentri();
+        setPaint();
     }
 
     @Override
@@ -88,7 +90,7 @@ public class ShapeI extends GameObject {
             return;
         }
         state = (state + 1) % 4;
-        this.grid.setAll(this.gridLocation);
+        this.grid.setAll(this.gridLocation,this.paint);
         
     }
 
@@ -121,6 +123,11 @@ public class ShapeI extends GameObject {
     public void setCentri() {
         centri[0]=4;
         centri[1]=5;
+    }
+
+    @Override
+    public void setPaint() {
+        this.paint = PaintObjects.PaintColors.lblue;
     }
 
 }

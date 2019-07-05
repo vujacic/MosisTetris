@@ -17,6 +17,7 @@ import java.util.Queue;
 public class MainActivity extends AppCompatActivity {
     GameSurface gs;
     GameThread gt;
+    int delay;
     boolean doubleBackToExitPressedOnce = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,17 +81,48 @@ public class MainActivity extends AppCompatActivity {
     }
     private void buttonListeners(Button b,final Queue<Integer> q)
     {
-        b.setOnClickListener(new View.OnClickListener() {
+//        b.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Handler handler=new Handler();
+//                handler.postDelayed(new Runnable(){
+//                    @Override
+//                    public void run() {
+//                        q.add(0);
+//
+//                    }
+//                },67);
+//            }
+//        });
+        b.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onClick(View v) {
+            public boolean onTouch(View v, MotionEvent event) {
                 Handler handler=new Handler();
-                handler.postDelayed(new Runnable(){
-                    @Override
-                    public void run() {
-                        q.add(0);
+                if(event.getAction() == MotionEvent.ACTION_DOWN){
+                    handler.postDelayed(new Runnable(){
+                        @Override
+                        public void run() {
+                            q.add(0);
 
-                    }
-                },67);
+                        }
+                    },67);
+                } else if (event.getAction() == MotionEvent.ACTION_UP) {
+                            q.add(1);
+                }
+
+//                handler.postDelayed(new Runnable(){
+//                    @Override
+//                    public void run() {
+//                        if(event.getAction() == MotionEvent.ACTION_DOWN) {
+//                            q.add(1);
+//                        }
+//                        else if (event.getAction() == MotionEvent.ACTION_UP) {
+//                            q.add(2);
+//                        }
+//
+//                    }
+//                },67);
+                return true;
             }
         });
     }

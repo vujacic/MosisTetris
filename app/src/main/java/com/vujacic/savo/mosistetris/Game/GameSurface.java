@@ -13,6 +13,8 @@ import android.view.SurfaceView;
 import android.view.SurfaceHolder;
 import android.widget.Toast;
 
+import com.vujacic.savo.mosistetris.Game.Helpers.Das;
+import com.vujacic.savo.mosistetris.Game.Helpers.RandomPieceGenerator;
 import com.vujacic.savo.mosistetris.Game.Objects.GameObject;
 import com.vujacic.savo.mosistetris.Game.Objects.ShapeI;
 import com.vujacic.savo.mosistetris.Game.Objects.ShapeJ;
@@ -32,7 +34,8 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
     public Queue<Integer> queue=new LinkedList<>();
     public Queue<Integer> queueL=new LinkedList<>();
     public Queue<Integer> queueR=new LinkedList<>();
-
+    public Das left, right, rotate;
+    public RandomPieceGenerator generator;
 //    private boolean blocked=false;
 //    private Handler handler=new Handler();
 //    @Override
@@ -77,6 +80,9 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
     long cumulativno=0;
     GameObject gm;
     TetrisGrid tetrisGrid = new TetrisGrid();
+    int ldas = 7;
+    int lcount;
+    boolean lhold = false;
     //private ChibiCharacter chibi1;
 
     public GameSurface(Context context)  {
@@ -100,12 +106,12 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
 
     public void update(long elapsed)  {
         // this.chibi1.update();
-        if(!queue.isEmpty())
-        {
-            queue.remove();
-            //alfa+=90;
-            gm.rotate();
-        }
+//        if(!queue.isEmpty())
+//        {
+//            queue.remove();
+//            //alfa+=90;
+//            gm.rotate();
+//        }
         cumulativno+=elapsed;
         if(cumulativno/1000000>1000) {
 //            if (y < 20) {
@@ -117,18 +123,35 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
 //            }
             cumulativno=0;
         }
-        if(!queueL.isEmpty())
-        {
-            queueL.remove();
-            x-=1;
-            gm.translate(0,-1);
-        }
-        if(!queueR.isEmpty())
-        {
-            queueR.remove();
-            x+=1;
-            gm.translate(0,1);
-        }
+        rotate.handleInput();
+        left.handleInput();
+        right.handleInput();
+//        if (!queueL.isEmpty() || lhold) {
+//            if(queueL.isEmpty()){
+//                if(lcount >= ldas){
+//                    gm.translate(0,-1);
+////                    lcount = 0;
+//                }
+//                lcount++;
+//            }else {
+//                int retQ= queueL.remove();
+//                if(retQ == 0){
+//                    gm.translate(0, -1);
+//                    lhold = true;
+//                }
+//                if(retQ == 1){
+//                    lhold = false;
+//                    lcount = 0;
+//                }
+//
+//            }
+//        }
+//        if(!queueR.isEmpty())
+//        {
+//            queueR.remove();
+//            x+=1;
+//            gm.translate(0,1);
+//        }
     }
 
 
@@ -258,7 +281,13 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
         mPaintRed.setStyle(Paint.Style.FILL_AND_STROKE);
         mPaintRed.setColor(Color.RED);
 
-        gm=new ShapeZ(tetrisGrid);
+        generator = new RandomPieceGenerator(tetrisGrid);
+        gm = generator.take();
+        //gm=new ShapeZ(tetrisGrid);
+
+        left = new Das.LDas(queueL,gm);
+        right = new Das.RDas(queueR,gm);
+        rotate = new Das.RotateDas(queue,gm);
     }
 
     void draw(){

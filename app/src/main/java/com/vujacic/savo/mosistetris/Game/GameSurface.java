@@ -36,9 +36,8 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
     public Queue<Integer> queueL=new LinkedList<>();
     public Queue<Integer> queueR=new LinkedList<>();
     public Queue<Integer> queueD=new LinkedList<>();
-    public Das left, right, rotate;
-    public RandomPieceGenerator generator;
-    public GameRules rules;
+
+
 //    private boolean blocked=false;
 //    private Handler handler=new Handler();
 //    @Override
@@ -83,9 +82,11 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
     long cumulativno=0;
     GameObject gm;
     TetrisGrid tetrisGrid = new TetrisGrid();
-    int ldas = 7;
-    int lcount;
-    boolean lhold = false;
+    public RandomPieceGenerator generator = new RandomPieceGenerator(tetrisGrid);
+    public GameRules rules = new GameRules(tetrisGrid);
+    public Das left = new Das.LDas(queueL,gm);
+    public Das right = new Das.RDas(queueR,gm);
+    public Das rotate = new Das.RotateDas(queue,gm);
     //private ChibiCharacter chibi1;
 
     public GameSurface(Context context)  {
@@ -108,6 +109,9 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     public void update(long elapsed)  {
+        if(rules.scoreboard.testEnd()) {
+            return;
+        }
         if(gm == null){
             gm = generator.take();
             rotate.setObject(gm);
@@ -134,11 +138,9 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
         cumulativno+=elapsed;
         if(cumulativno/1000000>rules.speed) {
             boolean uspesno= gm.translate(1,0);
-//            if(!uspesno){
-//                rules.startLocking();
-//            } else {
-//                rules.stopLocking();
-//            }
+            if(uspesno && rules.speed == 0) {
+                rules.softDropPts();
+            }
 
             cumulativno=0;
         }
@@ -312,14 +314,14 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
         mPaintRed.setStyle(Paint.Style.FILL_AND_STROKE);
         mPaintRed.setColor(Color.RED);
 
-        rules = new GameRules(tetrisGrid);
-        generator = new RandomPieceGenerator(tetrisGrid);
+//        rules = new GameRules(tetrisGrid);
+//        generator = new RandomPieceGenerator(tetrisGrid);
         //gm = generator.take();
         //gm=new ShapeZ(tetrisGrid);
 
-        left = new Das.LDas(queueL,gm);
-        right = new Das.RDas(queueR,gm);
-        rotate = new Das.RotateDas(queue,gm);
+//        left = new Das.LDas(queueL,gm);
+//        right = new Das.RDas(queueR,gm);
+//        rotate = new Das.RotateDas(queue,gm);
     }
 
     void draw(){

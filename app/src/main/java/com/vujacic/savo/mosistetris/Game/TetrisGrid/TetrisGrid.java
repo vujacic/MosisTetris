@@ -127,11 +127,12 @@ public class TetrisGrid {
         }
     }
 
-    public void clearLines() {
+    public int clearLines() {
         List<Integer> exes = new ArrayList<>();
         exes.add(lastState[0]);exes.add(lastState[2]);exes.add(lastState[4]);exes.add(lastState[6]);
         Integer[] unique = new HashSet<Integer>(exes).toArray(new Integer[] {});
         Arrays.sort(unique);
+        int linesCleared=0;
         for(int i = 0; i<unique.length;i++){
             boolean isFilled = true;
             for(int j = 0; j<10 ;j++) {
@@ -141,6 +142,7 @@ public class TetrisGrid {
                 }
             }
             if(isFilled){
+                linesCleared++;
                 int[] newLine = new int[10];
                 //List<int[]>lista= Arrays.asList(mainGrid);
                 //lista.remove(i);
@@ -167,6 +169,21 @@ public class TetrisGrid {
             }
         }
         lastState = new int[8];
+        return linesCleared;
+    }
+
+    public boolean lost() {
+        boolean lost = false;
+        outerloop:
+        for(int i =0 ;i<2;i++) {
+            for (int j=0; j<10;j++){
+                if(mainGrid[i][j] != 0) {
+                    lost =true;
+                    break outerloop;
+                }
+            }
+        }
+        return lost;
     }
 
 }

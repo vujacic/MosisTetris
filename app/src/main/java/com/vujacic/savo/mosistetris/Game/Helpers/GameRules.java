@@ -10,10 +10,12 @@ public class GameRules {
     int lockinDelay = 15;
     public boolean lockingIn = false;
     int lockCount = 0;
+    public Scoreboard scoreboard;
 
     public GameRules(TetrisGrid tg) {
         this.tg = tg;
         speed = defaultSpeed;
+        scoreboard = new Scoreboard();
     }
 
     public void startLocking() {
@@ -32,8 +34,12 @@ public class GameRules {
             if (lockCount == lockinDelay) {
                 gm.oldNewPaint(true);
                 gm.drawGridLocation();
-                tg.clearLines();
+                int cleardLines=tg.clearLines();
+                scoreboard.lineUp(cleardLines);
                 this.stopLocking();
+                if(tg.lost()){
+                    scoreboard.setLost();
+                }
                 return true;
             }
         } else{
@@ -45,5 +51,9 @@ public class GameRules {
     public void resetSpeed() {
         this.speed = defaultSpeed;
 
+    }
+
+    public void softDropPts() {
+        this.scoreboard.softDrop();
     }
 }

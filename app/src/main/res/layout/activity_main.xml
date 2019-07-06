@@ -1,12 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".MainActivity">
+<layout>
+    <data>
+        <import type="com.vujacic.savo.mosistetris.Game.Helpers.StringUtil" />
+        <variable name="scoreb" type="com.vujacic.savo.mosistetris.Game.Helpers.Scoreboard"/>
+    </data>
+    <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".MainActivity">
 
-    <!--<TextView-->
+
+        <!--<TextView-->
         <!--android:layout_width="wrap_content"-->
         <!--android:layout_height="wrap_content"-->
         <!--android:text="Hello World!"-->
@@ -15,85 +21,125 @@
         <!--app:layout_constraintRight_toRightOf="parent"-->
         <!--app:layout_constraintTop_toTopOf="parent" />-->
 
-    <FrameLayout
-        android:id="@+id/fl"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <com.vujacic.savo.mosistetris.Game.GameSurface
-            android:id="@+id/gs"
+        <FrameLayout
+            android:id="@+id/fl"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-        <android.support.constraint.ConstraintLayout
+            <com.vujacic.savo.mosistetris.Game.GameSurface
+                android:id="@+id/gs"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
 
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom">
+            <android.support.constraint.ConstraintLayout
 
-            <ImageButton
-                android:id="@+id/left"
-                android:layout_width="75dp"
-                android:layout_height="50dp"
-
-                android:layout_marginTop="210dp"
-                android:alpha="100"
-                android:text="left"
-                app:layout_constraintEnd_toStartOf="@+id/right"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/outline_chevron_left_24"
-                android:backgroundTint="#cca7a9ab"/>
-
-            <ImageButton
-                android:id="@+id/right"
-                android:layout_width="75dp"
-
-                android:layout_height="50dp"
-                android:layout_marginLeft="72dp"
-                android:layout_marginStart="72dp"
-                android:layout_marginTop="210dp"
-                android:text="right"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/outline_chevron_right_24"
-                android:backgroundTint="#cca7a9ab"/>
-
-            <ImageButton
-                android:id="@+id/rotacija"
-                android:layout_width="75dp"
-                android:layout_height="75dp"
-
-                android:layout_marginEnd="4dp"
-                android:layout_marginRight="4dp"
-                android:layout_marginTop="224dp"
-                android:scaleType="center"
-                android:text="Rotiraj"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/outline_refresh_24"
-                android:backgroundTint="#cca7a9ab"/>
-
-            <ImageButton
-                android:id="@+id/down"
-                android:layout_width="75dp"
-                android:layout_height="50dp"
-
-                android:layout_marginLeft="38dp"
-                android:layout_marginStart="38dp"
-                android:layout_marginTop="256dp"
-                android:alpha="100"
-                android:text="left"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/outline_expand_more_24"
-                android:backgroundTint="#cca7a9ab"/>
-
-        </android.support.constraint.ConstraintLayout>
-
-    </FrameLayout>
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom">
 
 
-</android.support.constraint.ConstraintLayout>
+                <ImageButton
+                    android:id="@+id/left"
+                    android:layout_width="75dp"
+                    android:layout_height="50dp"
+
+                    android:layout_marginTop="210dp"
+                    android:alpha="100"
+                    android:text="left"
+                    app:layout_constraintEnd_toStartOf="@+id/right"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/outline_chevron_left_24"
+                    android:backgroundTint="#cca7a9ab"/>
+
+                <ImageButton
+                    android:id="@+id/right"
+                    android:layout_width="75dp"
+
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="72dp"
+                    android:layout_marginStart="72dp"
+                    android:layout_marginTop="210dp"
+                    android:text="right"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/outline_chevron_right_24"
+                    android:backgroundTint="#cca7a9ab"/>
+
+                <ImageButton
+                    android:id="@+id/rotacija"
+                    android:layout_width="75dp"
+                    android:layout_height="75dp"
+
+                    android:layout_marginEnd="4dp"
+                    android:layout_marginRight="4dp"
+                    android:layout_marginTop="224dp"
+                    android:scaleType="center"
+                    android:text="Rotiraj"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/outline_refresh_24"
+                    android:backgroundTint="#cca7a9ab"/>
+
+                <ImageButton
+                    android:id="@+id/down"
+                    android:layout_width="75dp"
+                    android:layout_height="50dp"
+
+                    android:layout_marginLeft="38dp"
+                    android:layout_marginStart="38dp"
+                    android:layout_marginTop="256dp"
+                    android:alpha="100"
+                    android:text="left"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/outline_expand_more_24"
+                    android:backgroundTint="#cca7a9ab"/>
+
+            </android.support.constraint.ConstraintLayout>
+
+            <android.support.constraint.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="145dp"
+                android:layout_gravity="top">
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/Score"
+                    android:layout_width="40dp"
+                    android:layout_height="23dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:text="Score:"
+                    app:fontFamily="@font/bangers"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/scoreNumber"
+                    android:layout_width="68dp"
+                    android:layout_height="23dp"
+                    android:layout_marginTop="40dp"
+                    android:text="@{String.valueOf(scoreb.score)}"
+                    app:fontFamily="@font/bangers"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/gameover"
+                    android:layout_width="68dp"
+                    android:layout_height="23dp"
+                    android:layout_marginTop="76dp"
+                    android:text="@{StringUtil.checkEnding(scoreb.lost)}"
+                    app:fontFamily="@font/bangers"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </android.support.constraint.ConstraintLayout>
+
+        </FrameLayout>
+
+
+    </android.support.constraint.ConstraintLayout>
+</layout>

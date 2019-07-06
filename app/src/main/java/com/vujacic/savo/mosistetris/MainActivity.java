@@ -1,6 +1,7 @@
 package com.vujacic.savo.mosistetris;
 
 import android.content.pm.ActivityInfo;
+import android.databinding.DataBindingUtil;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -12,6 +13,8 @@ import android.widget.Toast;
 
 import com.vujacic.savo.mosistetris.Game.GameSurface;
 import com.vujacic.savo.mosistetris.Game.GameThread;
+import com.vujacic.savo.mosistetris.Game.Helpers.Scoreboard;
+import com.vujacic.savo.mosistetris.databinding.ActivityMainBinding;
 
 import java.util.Queue;
 
@@ -20,16 +23,21 @@ public class MainActivity extends AppCompatActivity {
     GameThread gt;
     int delay;
     boolean doubleBackToExitPressedOnce = false;
+    ActivityMainBinding mBinding;
+    Scoreboard scoreboard;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        //setContentView(R.layout.activity_main);
+        mBinding = DataBindingUtil.setContentView(this,R.layout.activity_main);
 
         //setContentView(new GameSurface(this));
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         gs=findViewById(R.id.gs);
         gt=gs.gameThread;
+        scoreboard = gs.rules.scoreboard;
+        mBinding.setScoreb(scoreboard);
 
         ImageButton rotate=findViewById(R.id.rotacija);
         buttonListeners(rotate,gs.queue);

@@ -74,6 +74,7 @@ public class ShapeI extends GameObject {
 //        trans.set(0,2,-gridLocation[4]);
 //        trans.set(1,2,-gridLocation[5]);
 //        mnoziti=transR.mult(rotate).mult(trans);
+        int[] position = gridLocation.clone();
         int centarx = gridLocation[centri[0]];
         int centary = gridLocation[centri[1]];
         for(int i = 0 ; i< 8 ; i+=2){
@@ -83,10 +84,11 @@ public class ShapeI extends GameObject {
             int xp = gridLocation[i]- centarx;
             int yp = gridLocation[i+1] - centary;
 
-            gridLocation[i] = yp + centarx + stateCorrection[state][0];
-            gridLocation[i+1] = -xp + centary + stateCorrection[state][1];
+            position[i] = yp + centarx + stateCorrection[state][0];
+            position[i+1] = -xp + centary + stateCorrection[state][1];
         }
-        if(!wallKick()){
+        if(!wallKick(position)){
+            this.grid.setAll(this.gridLocation, this.paint);
             return;
         }
         state = (state + 1) % 4;
@@ -127,7 +129,10 @@ public class ShapeI extends GameObject {
 
     @Override
     public void setPaint() {
-        this.paint = this.oldPaint = PaintObjects.PaintColors.lblue;
+        this.paint = PaintObjects.PaintColors.lblue;
+        this.oldPaint = PaintObjects.PaintColors.lblue;
+        this.newPaint = new Paint(this.paint);
+        this.newPaint.setAlpha(100);
     }
 
 }

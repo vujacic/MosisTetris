@@ -20,6 +20,7 @@ public abstract class GameObject {
     int centri[] = new int[2];
     Paint paint;
     Paint oldPaint;
+    Paint newPaint;
 
     public GameObject() {
         location=new Point[8];
@@ -47,26 +48,28 @@ public abstract class GameObject {
     public static SimpleMatrix transR = new SimpleMatrix(3,3,true,new float[]{1,0,1,0,1,1,0,0,1});
 
     public void rotate(){
+        int[] position = gridLocation.clone();
         int centarx = gridLocation[centri[0]];
         int centary = gridLocation[centri[1]];
         for(int i = 0 ; i< 8 ; i+=2){
             int xp = gridLocation[i]- centarx;
             int yp = gridLocation[i+1] - centary;
 
-            gridLocation[i] = yp + centarx;
-            gridLocation[i+1] = -xp + centary;
+            position[i] = yp + centarx;
+            position[i+1] = -xp + centary;
         }
-        if(!wallKick()){
+        if(!wallKick(position)){
+            this.grid.setAll(this.gridLocation, this.paint);
             return;
         }
         state = (state + 1) % 4;
         this.grid.setAll(this.gridLocation, this.paint);
-        }
+    }
 
-    public boolean wallKick() {
+    public boolean wallKick(int[] positionTest) {
         int[] position;
         for(int i = 0;i<5;i++){
-            position = gridLocation.clone();
+            position = positionTest.clone();
             for(int j=0;j<8;j+=2) {
                 position[j]+=wallKickData[state][i][1];
                 position[j+1]+=wallKickData[state][i][0];
@@ -86,6 +89,7 @@ public abstract class GameObject {
             position[i+1]+=y;
         }
         if(!grid.testAll(position)){
+            this.grid.setAll(this.gridLocation, this.paint);
             return false;
         }
         this.gridLocation= position.clone();
@@ -102,13 +106,15 @@ public abstract class GameObject {
 
     public abstract void setCentri();
     public abstract void setPaint();
-    public void setAlpha(int alpha){
-        paint = PaintObjects.PaintColors.ljubicica;
-        paint.setAlpha(alpha);
-    }
-    public void restoreAlpha(){
-        if(oldPaint!=null)
+    public void oldNewPaint(boolean old){
+        if(old)
             paint = oldPaint;
+        else
+            paint = newPaint;
+    }
+
+    public void drawGridLocation() {
+        this.grid.setAll(this.gridLocation, this.paint);
     }
 
 }

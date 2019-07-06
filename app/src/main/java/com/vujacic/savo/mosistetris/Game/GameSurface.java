@@ -121,24 +121,6 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
 //            //alfa+=90;
 //            gm.rotate();
 //        }
-        cumulativno+=elapsed;
-        if(cumulativno/1000000>rules.speed) {
-            boolean uspesno= gm.translate(1,0);
-            if(!uspesno){
-                rules.startLocking();
-            } else {
-                rules.stopLocking();
-            }
-
-            cumulativno=0;
-        }
-        if(rules.locking()){
-            gm = generator.take();
-            rotate.setObject(gm);
-            left.setObject(gm);
-            right.setObject(gm);
-            return;
-        }
         rotate.handleInput();
         left.handleInput();
         right.handleInput();
@@ -149,6 +131,32 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
                 rules.speed = 0;
             }
         }
+        cumulativno+=elapsed;
+        if(cumulativno/1000000>rules.speed) {
+            boolean uspesno= gm.translate(1,0);
+//            if(!uspesno){
+//                rules.startLocking();
+//            } else {
+//                rules.stopLocking();
+//            }
+
+            cumulativno=0;
+        }
+        if(gm.translate(1,0)){
+            rules.stopLocking();
+            gm.translate(-1,0);
+        }else {
+            rules.startLocking();
+        }
+        if(rules.locking(gm)){
+            gm = generator.take();
+            rotate.setObject(gm);
+            left.setObject(gm);
+            right.setObject(gm);
+            return;
+        }
+
+
 //        if (!queueL.isEmpty() || lhold) {
 //            if(queueL.isEmpty()){
 //                if(lcount >= ldas){

@@ -47,13 +47,13 @@ public class PaintObjects {
 
             black = new Paint();
             black.setStyle(Paint.Style.STROKE);
-            black.setStrokeWidth(0.1f);
+            black.setStrokeWidth(0.2f);
 //            black.setColor(Color.parseColor("#FFFFFF"));
-            white.setColor(Color.parseColor("#242424"));
+            black.setColor(Color.parseColor("#000000"));
 
             grey = new Paint(lblue);
 //            grey.setColor(Color.parseColor("#646a75"));
-            grey.setColor(Color.parseColor("#C1C1C1"));
+                grey.setColor(Color.parseColor("#363535"));
             //grey.setAlpha(100);
 
             ljubicica = new Paint(lblue);

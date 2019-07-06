@@ -25,14 +25,19 @@ public class GameRules {
         lockCount = 0;
     }
 
-    public boolean locking() {
+    public boolean locking(GameObject gm) {
         if(lockingIn) {
             lockCount += 1;
-            if (lockCount == 30) {
+            gm.oldNewPaint(false);
+            if (lockCount == lockinDelay) {
+                gm.oldNewPaint(true);
+                gm.drawGridLocation();
                 tg.clearLines();
                 this.stopLocking();
                 return true;
             }
+        } else{
+            gm.oldNewPaint(true);
         }
         return false;
     }

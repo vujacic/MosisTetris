@@ -71,7 +71,10 @@ public class ShapeL extends GameObject {
 
     @Override
     public void setPaint() {
-        this.paint = this.oldPaint = PaintObjects.PaintColors.orange;
+        this.paint = PaintObjects.PaintColors.orange;
+        this.oldPaint = PaintObjects.PaintColors.orange;
+        this.newPaint = new Paint(this.paint);
+        this.newPaint.setAlpha(100);
     }
 
 }

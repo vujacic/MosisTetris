@@ -70,6 +70,6 @@ public class ShapeJ extends GameObject {
 
     @Override
     public void setPaint() {
-        this.paint = PaintObjects.PaintColors.blue;
+        this.paint = this.oldPaint = PaintObjects.PaintColors.blue;
     }
 }

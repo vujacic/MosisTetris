@@ -6,7 +6,7 @@ import java.util.Queue;
 
 public class Das {
     public Queue<Integer> kju;
-    public int delay = 7;
+    public int delay = 5;
     public int counter=0;
     public boolean hold;
     public int translate;

@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.vujacic.savo.mosistetris.Game.GameSurface;
@@ -30,8 +31,10 @@ public class MainActivity extends AppCompatActivity {
         gs=findViewById(R.id.gs);
         gt=gs.gameThread;
 
-        Button rotate=findViewById(R.id.rotacija);
+        ImageButton rotate=findViewById(R.id.rotacija);
         buttonListeners(rotate,gs.queue);
+        ImageButton down=findViewById(R.id.down);
+        buttonListeners(down,gs.queueD);
 //        rotate.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
@@ -46,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
 //            }
 //        });
 
-        Button left=findViewById(R.id.left);
+        ImageButton left=findViewById(R.id.left);
         buttonListeners(left,gs.queueL);
 //        left.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -62,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
 //            }
 //        });
 
-        Button right=findViewById(R.id.right);
+        ImageButton right=findViewById(R.id.right);
         buttonListeners(right,gs.queueR);
 //        right.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -79,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
 //        });
         Toast.makeText(this,"activ created",Toast.LENGTH_SHORT).show();
     }
-    private void buttonListeners(Button b,final Queue<Integer> q)
+    private void buttonListeners(ImageButton b,final Queue<Integer> q)
     {
 //        b.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -107,7 +110,13 @@ public class MainActivity extends AppCompatActivity {
                         }
                     },67);
                 } else if (event.getAction() == MotionEvent.ACTION_UP) {
+                    handler.postDelayed(new Runnable(){
+                        @Override
+                        public void run() {
                             q.add(1);
+
+                        }
+                    },67);
                 }
 
 //                handler.postDelayed(new Runnable(){
@@ -122,7 +131,7 @@ public class MainActivity extends AppCompatActivity {
 //
 //                    }
 //                },67);
-                return true;
+                return false;
             }
         });
     }

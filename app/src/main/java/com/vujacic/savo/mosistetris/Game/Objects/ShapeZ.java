@@ -70,6 +70,6 @@ public class ShapeZ extends GameObject {
 
     @Override
     public void setPaint() {
-        this.paint = PaintObjects.PaintColors.red;
+        this.paint = this.oldPaint = PaintObjects.PaintColors.red;
     }
 }

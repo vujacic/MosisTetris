@@ -6,6 +6,11 @@ import android.graphics.Paint;
 
 import com.vujacic.savo.mosistetris.Game.Helpers.PaintObjects;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+
 public class TetrisGrid {
     public TetrisGridObject[] grid;
     public int x,y,yExt;
@@ -122,5 +127,46 @@ public class TetrisGrid {
         }
     }
 
+    public void clearLines() {
+        List<Integer> exes = new ArrayList<>();
+        exes.add(lastState[0]);exes.add(lastState[2]);exes.add(lastState[4]);exes.add(lastState[6]);
+        Integer[] unique = new HashSet<Integer>(exes).toArray(new Integer[] {});
+        Arrays.sort(unique);
+        for(int i = 0; i<unique.length;i++){
+            boolean isFilled = true;
+            for(int j = 0; j<10 ;j++) {
+                if(mainGrid[unique[i]][j] == 0) {
+                    isFilled = false;
+                    break;
+                }
+            }
+            if(isFilled){
+                int[] newLine = new int[10];
+                //List<int[]>lista= Arrays.asList(mainGrid);
+                //lista.remove(i);
+                //lista.add(0,newLine);
+                //mainGrid = (int[][])lista.toArray();
+                for(int j = unique[i]; j>=1; j--){
+                 mainGrid[j]=mainGrid[j-1];
+                }
+                mainGrid[0]=new int[10];
+
+                //;List<TetrisGridObject> lista1 = Arrays.asList(grid);
+//                for(int j = 0; j<9 ;j++) {
+//                    lista1.remove(i*10+j);
+//                    lista1.add(0,new TetrisGridObject());
+//                }
+//                grid = (TetrisGridObject[])lista1.toArray();
+                for(int j = unique[i]*10+9; j >= 20; j--){
+                    grid[j]=grid[j-10];
+                }
+                for(int j = 0; j<20; j++){
+                    grid[j]= new TetrisGridObject();
+                }
+
+            }
+        }
+        lastState = new int[8];
+    }
 
 }

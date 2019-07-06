@@ -11,4 +11,5 @@ public class TetrisGridObject {
     public TetrisGridObject (){
         this.paintObject = PaintObjects.PaintColors.grey;
     }
+    public TetrisGridObject(TetrisGridObject tgo) {this.paintObject = tgo.paintObject;}
 }

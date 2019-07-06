@@ -70,7 +70,7 @@ public class ShapeO extends GameObject {
 
     @Override
     public void setPaint() {
-        this.paint = PaintObjects.PaintColors.yellow;
+        this.paint = this.oldPaint = PaintObjects.PaintColors.yellow;
     }
 
     public void rotate() {

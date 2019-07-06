@@ -4,6 +4,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Point;
 
+import com.vujacic.savo.mosistetris.Game.Helpers.PaintObjects;
 import com.vujacic.savo.mosistetris.Game.TetrisGrid.TetrisGrid;
 
 import org.ejml.simple.SimpleMatrix;
@@ -18,6 +19,7 @@ public abstract class GameObject {
     int state = 0;//0 - pocetno, 1 - rota desno, 2 - 2 rota desno, 3 - 3 rota desno
     int centri[] = new int[2];
     Paint paint;
+    Paint oldPaint;
 
     public GameObject() {
         location=new Point[8];
@@ -77,17 +79,18 @@ public abstract class GameObject {
         return false;
     }
 
-    public void translate(int x,int y){
+    public boolean translate(int x,int y){
         int[] position = gridLocation.clone();
         for(int i = 0; i< 8; i+=2){
             position[i]+=x;
             position[i+1]+=y;
         }
         if(!grid.testAll(position)){
-            return;
+            return false;
         }
         this.gridLocation= position.clone();
         this.grid.setAll(this.gridLocation, this.paint);
+        return true;
     }
 
     int[][][] wallKickData = new int[][][]{
@@ -99,5 +102,13 @@ public abstract class GameObject {
 
     public abstract void setCentri();
     public abstract void setPaint();
+    public void setAlpha(int alpha){
+        paint = PaintObjects.PaintColors.ljubicica;
+        paint.setAlpha(alpha);
+    }
+    public void restoreAlpha(){
+        if(oldPaint!=null)
+            paint = oldPaint;
+    }
 
 }

@@ -16,6 +16,7 @@ public class PaintObjects {
         public static Paint white;
         public static Paint black;
         public static Paint grey;
+        public static Paint ljubicica;
 
         static {
             lblue = new Paint();
@@ -43,14 +44,21 @@ public class PaintObjects {
             white = new Paint(lblue);
             white.setColor(Color.parseColor("#FFFFFF"));
 
+
             black = new Paint();
             black.setStyle(Paint.Style.STROKE);
             black.setStrokeWidth(0.1f);
-            black.setColor(Color.parseColor("#FFFFFF"));
+//            black.setColor(Color.parseColor("#FFFFFF"));
+            white.setColor(Color.parseColor("#242424"));
 
             grey = new Paint(lblue);
-            grey.setColor(Color.parseColor("#646a75"));
-            grey.setAlpha(100);
+//            grey.setColor(Color.parseColor("#646a75"));
+            grey.setColor(Color.parseColor("#C1C1C1"));
+            //grey.setAlpha(100);
+
+            ljubicica = new Paint(lblue);
+            ljubicica.setColor(Color.parseColor("#3d3038"));
+            ljubicica.setAlpha(100);
         }
     }
 }

@@ -222,9 +222,11 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
 //                mCanvas.translate(0, height );
 //            }
         float ar=(float)height/(float) width;
-        float sheight=868,swidth=434;
+        //float sheight=868,swidth=434;
+        float sheight = height*6/7; float swidth = sheight/2;
         float dx=width-swidth;
-        mCanvas.translate(dx/2.f,0);
+
+        mCanvas.translate(dx,0);// bilo je podeljeno sa dva da bi bilo u centar
         mCanvas.scale(swidth/10.f,sheight   /20.f);
 //        mCanvas.drawRect(0,0,1,1,mPaint);
 //        for(int i = 0;i<10;i++)
@@ -235,6 +237,15 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
 //            }
 //        }
         tetrisGrid.drawGrid(mCanvas);
+
+        mCanvas.restore();
+        mCanvas.save();
+        dx -= 10;
+        float eHeight = dx*2;
+        mCanvas.translate(0,eHeight);// bilo je podeljeno sa dva da bi bilo u centar
+        mCanvas.scale(dx/10.f,eHeight   /20.f);
+        tetrisGrid.drawGrid(mCanvas);
+
         //mCanvas.translate(5+x,y);
         //mCanvas.rotate(alfa);
 
@@ -257,6 +268,7 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
 //            mCanvas.drawRect(20,20,50,50,mPaint);
 //        }
         //draw();
+
         canvas.drawBitmap(mBitmap,0,0,mBitmapPaint);
         mCanvas.restore();
         // this.chibi1.draw(canvas);

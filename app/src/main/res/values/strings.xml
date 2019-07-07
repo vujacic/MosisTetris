@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">MosisTetris</string>
+    <string name="title_activity_find_people">FindPeopleActivity</string>
+    <string name="title_activity_people_list">PeopleList</string>
 </resources>

@@ -139,9 +139,10 @@ public class FindPeopleActivity extends AppCompatActivity implements View.OnClic
                 Client.client.sendData("ServerGreeting", "Hello Client".getBytes());
                 //We don't want to accept any other clients.
                 btSer.disconnect();
+                Intent  newGameIntent = new Intent(this,MainActivity.class);
+                startActivity(newGameIntent);
             }
-            Intent  newGameIntent = new Intent(this,MainActivity.class);
-            startActivity(newGameIntent);
+
         }
     }
 
@@ -150,14 +151,14 @@ public class FindPeopleActivity extends AppCompatActivity implements View.OnClic
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.start:{
-                Set<BluetoothDevice> pairedDevices =
-                        mBluetoothAdapter.getBondedDevices();
+//                Set<BluetoothDevice> pairedDevices =
+//                        mBluetoothAdapter.getBondedDevices();
                 ArrayList<String> pairedDeviceStrings = new ArrayList<String>();
-                if (pairedDevices.size() > 0) {
-                    for (BluetoothDevice device : pairedDevices) {
-                        pairedDeviceStrings.add(device.getName() + "\n" + device.getAddress());
-                    }
-                }
+//                if (pairedDevices.size() > 0) {
+//                    for (BluetoothDevice device : pairedDevices) {
+//                        pairedDeviceStrings.add(device.getName() + "\n" + device.getAddress());
+//                    }
+//                }
 
                 Intent  showDevicesIntent = new Intent(this,PeopleList.class);
                 showDevicesIntent.putStringArrayListExtra("devices", pairedDeviceStrings);

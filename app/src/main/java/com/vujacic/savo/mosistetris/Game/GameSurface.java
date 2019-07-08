@@ -35,6 +35,7 @@ import com.vujacic.savo.mosistetris.Game.TetrisGrid.TetrisGrid;
 
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.concurrent.ExecutorService;
 
 public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
     public GameThread gameThread;
@@ -75,19 +76,26 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
 //        return true;
 //    }
 
-
     Paint mBitmapPaint= new Paint(Paint.DITHER_FLAG);
     Canvas mCanvas;
     Paint mPaint,mPaintRed;
     float x,y;
     int width=0;
     int height=0;
+    float swidth =0;
+    float sheight = 0;
+    float eheight =0;
+    float scaleH = 0;
+    float scaleW = 0;
+    float scaleSh =0;
+    float scaleSw =0;
     float dx=0,dy=0;
     float alfa=0;
     boolean bitmapInit=false;
     public boolean canDraw=false;
     long cumulativno=0;
     long countGrid = 0;
+    long timeElapsed = 0;
     GameObject gm;
     TetrisGrid tetrisGrid = new TetrisGrid();
     TetrisGrid tetrisGrid2 = new TetrisGrid();
@@ -118,6 +126,7 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     public void update(long elapsed)  {
+        long tnow = System.currentTimeMillis();
         MatrixConverter b = new MatrixConverter(tetrisGrid2.mainGrid,tetrisGrid2,rules);
         b.start();
 //        StringByteArr sba = StaticQueue.remove();
@@ -144,9 +153,30 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
 //        if(!rules.sent() || !rules.recv()){
 //            return;
 //        }
-        if(rules.scoreboard.testEnd()) {
+        if(rules.myTimeout() && rules.enemyTimeout()){
+            //this.gameThread.setRunning(false);
             return;
         }
+        if(rules.myTimeout() && !rules.enemyTimeout()){
+            (new Thread(()-> {
+                rules.sendScore();
+            })).start();
+            return;
+        }
+        if(rules.testEnd()) {
+            //this.gameThread.setRunning(false);
+            return;
+        }
+        timeElapsed+=elapsed;
+        if(timeElapsed/1000000 > 1000){
+            rules.updateTime(1);
+            timeElapsed = 0;
+            (new Thread(()->{
+                    rules.sendTime();
+                    rules.sendScore();
+            })).start();
+        }
+
         if(gm == null){
             gm = generator.take();
             rotate.setObject(gm);
@@ -193,7 +223,7 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
             return;
         }
 
-        byte[] array = null;
+        //byte[] array = null;
 //        ByteConverter t = new ByteConverter(tetrisGrid.mainGrid);
 //        t.start();
 //        if(countGrid >= 60){
@@ -253,15 +283,21 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
 //            x+=1;
 //            gm.translate(0,1);
 //        }
+        long tend = System.currentTimeMillis();
+            if(tend-tnow > 16)
+        Log.d("milisek update",String.valueOf(tend-tnow));
     }
 
 
 
     @Override
     public void draw(Canvas canvas)  {
+        long tnow = System.currentTimeMillis();
         super.draw(canvas);
         mCanvas.save();
         mCanvas.drawColor(Color.WHITE);
+        //mCanvas.drawColor(1935304109);
+        //Log.d("boja",String.valueOf(Color.parseColor("#735A65AD")));
 
 
 //        for(int i=0;i<20;i++)
@@ -289,13 +325,16 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
 //                mCanvas.restore();
 //                mCanvas.translate(0, height );
 //            }
-        float ar=(float)height/(float) width;
+        //float ar=(float)height/(float) width;
         //float sheight=868,swidth=434;
-        float sheight = height*6/7; float swidth = sheight/2;
-        float dx=width-swidth;
+//        float sheight = height*6/7; float swidth = sheight/2;
+        //float dx=width-swidth;
 
+//        mCanvas.translate(dx,0);// bilo je podeljeno sa dva da bi bilo u centar
+//        mCanvas.scale(swidth/10.f,sheight   /20.f);
         mCanvas.translate(dx,0);// bilo je podeljeno sa dva da bi bilo u centar
-        mCanvas.scale(swidth/10.f,sheight   /20.f);
+        mCanvas.scale(scaleW,scaleH);
+
 //        mCanvas.drawRect(0,0,1,1,mPaint);
 //        for(int i = 0;i<10;i++)
 //        {
@@ -308,10 +347,14 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
 
         mCanvas.restore();
         mCanvas.save();
-        dx -= 10;
-        float eHeight = dx*2;
-        mCanvas.translate(0,eHeight);// bilo je podeljeno sa dva da bi bilo u centar
-        mCanvas.scale(dx/10.f,eHeight   /20.f);
+        //dx -= 10;
+        //float eHeight = dx*2;
+//        mCanvas.translate(0,eHeight);// bilo je podeljeno sa dva da bi bilo u centar
+//        mCanvas.scale(dx/10.f,eHeight   /20.f);
+
+        mCanvas.translate(0,eheight);// bilo je podeljeno sa dva da bi bilo u centar
+        mCanvas.scale(scaleSw,scaleSh);
+
         tetrisGrid2.drawGrid(mCanvas);
 
         //mCanvas.translate(5+x,y);
@@ -339,7 +382,9 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
 
         canvas.drawBitmap(mBitmap,0,0,mBitmapPaint);
         mCanvas.restore();
-        // this.chibi1.draw(canvas);
+//         this.chibi1.draw(canvas);
+        long tend = System.currentTimeMillis();
+            Log.d("milisek draw",String.valueOf(tend-tnow));
     }
 
     // Implements method of SurfaceHolder.Callback
@@ -359,6 +404,18 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
         this.width=width;
         this.height=height;
+
+        this.sheight=this.height*6.f/7.f;
+        this.swidth=sheight/2.f;
+        dx=width-swidth;
+        scaleH = sheight/20.f;
+        scaleW = swidth/10.f;
+
+        dy=dx-10;
+        eheight = 2*dy;
+        scaleSh = eheight/20.f;
+        scaleSw = dy/10.f;
+
         init();
         this.gameThread.setRunning(true);
         this.gameThread.start();
@@ -368,6 +425,7 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
         boolean retry= true;
+
         while(retry) {
             try {
                 this.gameThread.setRunning(false);
@@ -393,6 +451,8 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
         mPaintRed=new Paint();
         mPaintRed.setStyle(Paint.Style.FILL_AND_STROKE);
         mPaintRed.setColor(Color.RED);
+
+        rules.setEnemy();
 
 //        rules = new GameRules(tetrisGrid);
 //        generator = new RandomPieceGenerator(tetrisGrid);

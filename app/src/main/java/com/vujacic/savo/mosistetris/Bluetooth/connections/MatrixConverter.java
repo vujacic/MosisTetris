@@ -57,16 +57,6 @@ public class MatrixConverter extends Thread {
 
         if(sba!=null) {
             switch (sba.tag) {
-                case "init":
-                    rules.setRecv();
-                    break;
-                case "canSend":{
-                    synchronized (StaticQueue.lock1){
-                        StaticQueue.canSend = true;
-                    }
-
-                    break;
-                }
                 case "array": {
 //                    try (ByteArrayInputStream bis = new ByteArrayInputStream(sba.bytes);
 //                         ObjectInput in = new ObjectInputStream(bis)) {
@@ -84,12 +74,39 @@ public class MatrixConverter extends Thread {
 //                    } catch (Exception ex) {
 //                        ex.printStackTrace();
 //                    }
-                    Log.d("bajtovi",Integer.toString(sba.bytes.length));
+                    //Log.d("bajtovi",Integer.toString(sba.bytes.length));
                         tgrid.mainGrid = toMatrix(sba.bytes);
-                        Log.d("zmaj", Arrays.deepToString(tgrid.mainGrid));
+                        //Log.d("zmaj", Arrays.deepToString(tgrid.mainGrid));
                         tgrid.toTetrisGrid();
                 }
                 break;
+                case "canSend":{
+                    synchronized (StaticQueue.lock1){
+                        StaticQueue.canSend = true;
+                    }
+                    break;
+                }
+                case "time":{
+                    rules.scoreboard.setEnemyTime(parseInt(sba.bytes));
+                    break;
+                }
+                case "score":
+                    rules.setEnemyScore(parseInt(sba.bytes));
+                    break;
+                case "init":
+                    rules.setRecv();
+                    break;
+                case "lost":{
+                    rules.scoreboard.setEnemyLost();
+                    break;
+                }
+                case "line":{
+                    this.rules.setLinesOwed(parseInt(sba.bytes));
+                    break;
+                }
+                case "timeout":{
+                    rules.setEnemyScore(parseInt(sba.bytes));
+                }
             }
 
         }
@@ -111,5 +128,11 @@ public class MatrixConverter extends Thread {
             }
         }
         return  matrix;
+    }
+
+    public int parseInt(byte[] yourBytes){
+        ByteBuffer buf = ByteBuffer.wrap(yourBytes);
+        int res = buf.getInt();
+        return res;
     }
 }

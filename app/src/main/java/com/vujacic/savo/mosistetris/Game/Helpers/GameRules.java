@@ -61,6 +61,16 @@ public class GameRules {
     public boolean connect(){return true;}
     public boolean sent() {return true;}
     public boolean recv() {return true;}
+    public void setEnemy(){}
+    public void updateTime(int elapsed){ }
+    public void setEnemyScore(int eScore){}
+    public void setLinesOwed(int lines){}
+    public int getLinesOwed(){return 0;}
+    public boolean testEnd() {return scoreboard.testEnd();}
+    public void sendTime() {}
+    public boolean myTimeout() { return false;}
+    public boolean enemyTimeout() { return false;}
+    public void sendScore() { }
 }
 
 

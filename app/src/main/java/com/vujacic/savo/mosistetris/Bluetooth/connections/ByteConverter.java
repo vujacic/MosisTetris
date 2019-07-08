@@ -85,6 +85,10 @@ public class ByteConverter extends Thread {
         return array;
     }
 
+    public static byte[] intToByte(int broj){
+        return ByteBuffer.allocate(4).putInt(broj).array();
+    }
+
 
     public static byte[] converttoByte(int matrix[][]) {
 //        int intArray[] = new int[220];

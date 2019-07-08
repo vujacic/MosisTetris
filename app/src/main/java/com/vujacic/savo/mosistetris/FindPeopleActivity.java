@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.app.Activity;
+import android.os.ParcelUuid;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -15,7 +16,22 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.newtronlabs.easybluetooth.BluetoothClient;
+import com.newtronlabs.easybluetooth.BluetoothServer;
+import com.newtronlabs.easybluetooth.IBluetoothClient;
+import com.newtronlabs.easybluetooth.IBluetoothServer;
+import com.vujacic.savo.mosistetris.Bluetooth.AcceptThread;
+import com.vujacic.savo.mosistetris.Bluetooth.ConnectThread;
+import com.vujacic.savo.mosistetris.Bluetooth.MyBluetoothService;
+import com.vujacic.savo.mosistetris.Bluetooth.connections.Client;
+import com.vujacic.savo.mosistetris.Bluetooth.connections.SampleConnectionCallback;
+import com.vujacic.savo.mosistetris.Bluetooth.connections.SampleConnectionFailedListener;
+import com.vujacic.savo.mosistetris.Bluetooth.connections.SampleDataCallback;
+import com.vujacic.savo.mosistetris.Bluetooth.connections.SampleDataSentCallback;
+import com.vujacic.savo.mosistetris.Bluetooth.connections.StaticQueue;
+
 import java.util.ArrayList;
+import java.util.Queue;
 import java.util.Set;
 
 public class FindPeopleActivity extends AppCompatActivity implements View.OnClickListener {
@@ -24,6 +40,7 @@ public class FindPeopleActivity extends AppCompatActivity implements View.OnClic
     int SELECT_SERVER = 2;
     BluetoothAdapter mBluetoothAdapter;
     static final int PERMISSION_ACCES_FINE_LOCATION=1;
+    static final int MAKE_DISCOVERABLE=2;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,17 +86,65 @@ public class FindPeopleActivity extends AppCompatActivity implements View.OnClic
             Toast.makeText(this, toastText, Toast.LENGTH_LONG).show();
         }
         if(requestCode == SELECT_SERVER && resultCode == Activity.RESULT_OK) {
-           // try{
+            try{
                 Bundle deviceBundle=data.getExtras();
                 String mac = deviceBundle.getString("device");
                 BluetoothDevice device = mBluetoothAdapter.getRemoteDevice(mac);
-                String name = device.getName();
-                Toast.makeText(this,name, Toast.LENGTH_SHORT).show();
-//            }catch (Exception e){
-//                Toast.makeText(this,e.getMessage(),Toast.LENGTH_SHORT).show();
-//            }
+//                if(ct != null){
+//                    ct.cancel();
+//                }
+
+
+                BluetoothDevice serverDev = BluetoothAdapter.getDefaultAdapter().getRemoteDevice(device.getAddress());
+                Client.client = new BluetoothClient.Builder(this.getApplication(), serverDev, ParcelUuid.fromString("24001101-0000-1000-8000-00805F9B34FB"))
+                        .setConnectionCallback(new SampleConnectionCallback())
+                        // Let's also get notified if it fails
+                        .setConnectionFailedListener(new SampleConnectionFailedListener())
+                        // Receive data from the server
+                        .setDataCallback(new SampleDataCallback())
+                        // Be notified when the data is sent to the server or fails to send.
+                        .setDataSentCallback(new SampleDataSentCallback()).build();
+                // Connect to server
+                Client.client.connect();
+
+                while (StaticQueue.remove() == null) {
+                    Thread.sleep(100);
+                }
+                StaticQueue.canSend = false;
+
+                Intent  newGameIntent = new Intent(this,MainActivity.class);
+                //newGameIntent.putExtra("client", client);
+                startActivity(newGameIntent);
+//                String name = device.getName();
+//                Toast.makeText(this,name, Toast.LENGTH_SHORT).show();
+            }catch (Exception e){
+                Toast.makeText(this,e.getMessage(),Toast.LENGTH_SHORT).show();
+            }
+        }
+        if(requestCode == MAKE_DISCOVERABLE && resultCode == 120){
+            IBluetoothServer btSer =new BluetoothServer.Builder(this.getApplicationContext(),
+                    "EasyBtService", ParcelUuid.fromString("24001101-0000-1000-8000-00805F9B34FB"))
+                    .build();
+            if(btSer == null) {
+                Toast.makeText(this,"Ne moze se napravi server",Toast.LENGTH_SHORT);
+            } else {
+                // Block until a client connects.
+                Client.client = btSer.accept();
+                // Set a data callback to receive data from the remote device.
+                Client.client.setDataCallback(new SampleDataCallback());
+                // Set a connection callback to be notified of connection changes.
+                Client.client.setConnectionCallback(new SampleConnectionCallback());
+                // Set a data send callback to be notified when data is sent of fails to send.
+                Client.client.setDataSentCallback(new SampleDataSentCallback());
+                Client.client.sendData("ServerGreeting", "Hello Client".getBytes());
+                //We don't want to accept any other clients.
+                btSer.disconnect();
+            }
+            Intent  newGameIntent = new Intent(this,MainActivity.class);
+            startActivity(newGameIntent);
         }
     }
+
 
     @Override
     public void onClick(View v) {
@@ -106,9 +171,15 @@ public class FindPeopleActivity extends AppCompatActivity implements View.OnClic
 //                setResult(Activity.RESULT_CANCELED);
 //                finish();
 
-                Intent discoverableIntent = new
-                Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
-                startActivity(discoverableIntent);
+                Intent discoverableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
+                startActivityForResult(discoverableIntent,MAKE_DISCOVERABLE);
+
+
+
+//                if(at!=null){
+//                    at.cancel();
+//                }
+
                 break;
             }
 //            case R.id.editmyplace_location_button:{

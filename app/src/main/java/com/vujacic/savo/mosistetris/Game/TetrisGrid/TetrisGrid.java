@@ -186,4 +186,17 @@ public class TetrisGrid {
         return lost;
     }
 
+    public void toTetrisGrid(){
+        int count = 0;
+        for(int i=0; i<22 ; i++) {
+            for(int j=0; j<10 ; j++){
+                if(mainGrid[i][j]==1)
+                    grid[count].paintObject = PaintObjects.PaintColors.blue;
+                else
+                    grid[count].paintObject = PaintObjects.PaintColors.grey;
+                count++;
+            }
+        }
+    }
+
 }

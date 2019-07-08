@@ -15,6 +15,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.vujacic.savo.mosistetris.Bluetooth.ConnectThread;
+
 import java.util.ArrayList;
 
 public class PeopleList extends AppCompatActivity {
@@ -52,7 +54,7 @@ public class PeopleList extends AppCompatActivity {
                 Intent data = new Intent();
                 data.putExtra("device", macAdr);
                 setResult(RESULT_OK, data);
-                //mBluetoothAdapter.cancelDiscovery();
+                mBluetoothAdapter.cancelDiscovery();
                 finish();
 
 //                Intent intent=new Intent(PeopleList.this,FindPeopleActivity.class);

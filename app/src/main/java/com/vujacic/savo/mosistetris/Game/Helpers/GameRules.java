@@ -56,4 +56,11 @@ public class GameRules {
     public void softDropPts() {
         this.scoreboard.softDrop();
     }
+
+    public void setRecv(){}
+    public boolean connect(){return true;}
+    public boolean sent() {return true;}
+    public boolean recv() {return true;}
 }
+
+

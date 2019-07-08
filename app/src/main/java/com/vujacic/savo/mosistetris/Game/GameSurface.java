@@ -13,8 +13,15 @@ import android.view.SurfaceView;
 import android.view.SurfaceHolder;
 import android.widget.Toast;
 
+import com.vujacic.savo.mosistetris.Bluetooth.connections.ByteConverter;
+import com.vujacic.savo.mosistetris.Bluetooth.connections.Client;
+import com.vujacic.savo.mosistetris.Bluetooth.connections.MatrixConverter;
+import com.vujacic.savo.mosistetris.Bluetooth.connections.SampleDataSentCallback;
+import com.vujacic.savo.mosistetris.Bluetooth.connections.StaticQueue;
+import com.vujacic.savo.mosistetris.Bluetooth.connections.StringByteArr;
 import com.vujacic.savo.mosistetris.Game.Helpers.Das;
 import com.vujacic.savo.mosistetris.Game.Helpers.GameRules;
+import com.vujacic.savo.mosistetris.Game.Helpers.MultiplayerRules;
 import com.vujacic.savo.mosistetris.Game.Helpers.RandomPieceGenerator;
 import com.vujacic.savo.mosistetris.Game.Objects.GameObject;
 import com.vujacic.savo.mosistetris.Game.Objects.ShapeI;
@@ -80,10 +87,12 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
     boolean bitmapInit=false;
     public boolean canDraw=false;
     long cumulativno=0;
+    long countGrid = 0;
     GameObject gm;
     TetrisGrid tetrisGrid = new TetrisGrid();
+    TetrisGrid tetrisGrid2 = new TetrisGrid();
     public RandomPieceGenerator generator = new RandomPieceGenerator(tetrisGrid);
-    public GameRules rules = new GameRules(tetrisGrid);
+    public GameRules rules = new MultiplayerRules(tetrisGrid);
     public Das left = new Das.LDas(queueL,gm);
     public Das right = new Das.RDas(queueR,gm);
     public Das rotate = new Das.RotateDas(queue,gm);
@@ -109,6 +118,32 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     public void update(long elapsed)  {
+        MatrixConverter b = new MatrixConverter(tetrisGrid2.mainGrid,tetrisGrid2,rules);
+        b.start();
+//        StringByteArr sba = StaticQueue.remove();
+//        if(sba!=null) {
+//            switch (sba.tag) {
+//                case "init":
+//                    rules.setRecv();
+//                    break;
+//                case "array": {
+////                    tetrisGrid2.mainGrid = ByteConverter.convertToMatrix(sba.bytes);
+////                    tetrisGrid2.toTetrisGrid();
+//                    b = new MatrixConverter(sba.bytes,tetrisGrid2.mainGrid);
+//                    b.start();
+//                }
+//                    break;
+//            }
+//        }
+
+
+
+//        if(!rules.connect()){
+//            return;
+//        }
+//        if(!rules.sent() || !rules.recv()){
+//            return;
+//        }
         if(rules.scoreboard.testEnd()) {
             return;
         }
@@ -156,6 +191,39 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
             left.setObject(gm);
             right.setObject(gm);
             return;
+        }
+
+        byte[] array = null;
+//        ByteConverter t = new ByteConverter(tetrisGrid.mainGrid);
+//        t.start();
+//        if(countGrid >= 60){
+            ByteConverter t = new ByteConverter(tetrisGrid.mainGrid);
+            t.start();
+            try {
+                t.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+//            t.start();
+//            try {
+//                t.join();
+//                if(b!=null)
+//                    b.join();
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+//            //Client.client.sendData("array", ByteConverter.converttoByte(tetrisGrid.mainGrid));
+//            Client.client.sendData("array", t.myBytes);
+//            tetrisGrid2.toTetrisGrid();
+//            countGrid = 0;
+//        }else{
+//            countGrid++;
+//        }
+
+        try {
+            b.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
 
 
@@ -244,7 +312,7 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
         float eHeight = dx*2;
         mCanvas.translate(0,eHeight);// bilo je podeljeno sa dva da bi bilo u centar
         mCanvas.scale(dx/10.f,eHeight   /20.f);
-        tetrisGrid.drawGrid(mCanvas);
+        tetrisGrid2.drawGrid(mCanvas);
 
         //mCanvas.translate(5+x,y);
         //mCanvas.rotate(alfa);
@@ -283,7 +351,7 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
         //init();
         this.gameThread = new GameThread(this,holder);
 //        this.gameThread.setRunning(true);
-//        this.gameThread.start();
+    //        this.gameThread.start();
     }
 
     // Implements method of SurfaceHolder.Callback

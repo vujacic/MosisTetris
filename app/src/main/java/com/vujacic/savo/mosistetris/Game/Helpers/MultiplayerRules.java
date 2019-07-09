@@ -112,6 +112,16 @@ public class MultiplayerRules extends GameRules {
         return false;
     }
 
+    @Override
+    public void calculateWinner() {
+        if(this.scoreboard.score.get() > this.scoreboard.enemyScore.get()){
+            this.scoreboard.setEnemyLost();
+        }
+        else {
+            this.scoreboard.setLost();
+        }
+    }
+
 
 
 }

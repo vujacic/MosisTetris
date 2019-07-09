@@ -88,6 +88,8 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
     float eheight =0;
     float scaleH = 0;
     float scaleW = 0;
+    float rScaleH = 0;
+    float rScaleW = 0;
     float scaleSh =0;
     float scaleSw =0;
     float dx=0,dy=0;
@@ -156,6 +158,7 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
 //        }
         if(rules.myTimeout() && rules.enemyTimeout()){
             //this.gameThread.setRunning(false);
+            rules.calculateWinner();
             return;
         }
         if(rules.myTimeout() && !rules.enemyTimeout()){
@@ -346,8 +349,10 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
 //        }
         tetrisGrid.drawGrid(mCanvas);
 
-        mCanvas.restore();
-        mCanvas.save();
+//        mCanvas.restore();
+//        mCanvas.save();
+        mCanvas.scale(rScaleW,rScaleH);
+        mCanvas.translate(-dx,0);
         //dx -= 10;
         //float eHeight = dx*2;
 //        mCanvas.translate(0,eHeight);// bilo je podeljeno sa dva da bi bilo u centar
@@ -411,6 +416,8 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
         dx=width-swidth;
         scaleH = sheight/20.f;
         scaleW = swidth/10.f;
+        rScaleH = 1/scaleH;
+        rScaleW = 1/scaleW;
 
         dy=dx-10;
         eheight = 2*dy;

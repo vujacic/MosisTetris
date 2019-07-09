@@ -71,6 +71,7 @@ public class GameRules {
     public boolean myTimeout() { return false;}
     public boolean enemyTimeout() { return false;}
     public void sendScore() { }
+    public void calculateWinner(){}
 }
 
 

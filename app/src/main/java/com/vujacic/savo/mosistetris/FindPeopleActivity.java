@@ -120,6 +120,7 @@ public class FindPeopleActivity extends AppCompatActivity implements View.OnClic
                 startActivity(newGameIntent);
 //                String name = device.getName();
 //                Toast.makeText(this,name, Toast.LENGTH_SHORT).show();
+                finish();
             }catch (Exception e){
                 Toast.makeText(this,e.getMessage(),Toast.LENGTH_SHORT).show();
             }
@@ -144,6 +145,7 @@ public class FindPeopleActivity extends AppCompatActivity implements View.OnClic
                 btSer.disconnect();
                 Intent  newGameIntent = new Intent(this,MainActivity.class);
                 startActivity(newGameIntent);
+                finish();
             }
 
         }

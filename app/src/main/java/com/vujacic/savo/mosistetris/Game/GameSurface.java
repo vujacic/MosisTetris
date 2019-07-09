@@ -285,7 +285,7 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
 //            gm.translate(0,1);
 //        }
 //        long tend = System.currentTimeMillis();
-//            if(tend-tnow > 16)
+//           // if(tend-tnow > 16)
 //        Log.d("milisek update",String.valueOf(tend-tnow));
     }
 
@@ -293,7 +293,7 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
 
     @Override
     public void draw(Canvas canvas)  {
-//        long tnow = System.currentTimeMillis();
+        //long tnow = System.currentTimeMillis();
         super.draw(canvas);
         mCanvas.save();
         mCanvas.drawColor(Color.WHITE);

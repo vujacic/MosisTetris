@@ -1,12 +1,16 @@
 package com.vujacic.savo.mosistetris;
 
 import android.annotation.SuppressLint;
+import android.app.Service;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.databinding.DataBindingUtil;
+import android.media.MediaPlayer;
+import android.os.AsyncTask;
 import android.os.Handler;
+import android.os.IBinder;
 import android.os.Message;
 import android.os.ParcelUuid;
 import android.support.v7.app.AppCompatActivity;
@@ -36,7 +40,21 @@ import com.vujacic.savo.mosistetris.databinding.ActivityMainBinding;
 
 import java.util.Queue;
 
+
 public class MainActivity extends AppCompatActivity {
+    public class BackgroundSound extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            MediaPlayer player = MediaPlayer.create(MainActivity.this, R.raw.tetris_theme);
+            player.setLooping(true); // Set looping
+            player.setVolume(1.0f, 1.0f);
+            player.start();
+
+            return null;
+        }
+
+    }
     GameSurface gs;
     GameThread gt;
     int delay;
@@ -45,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
     Scoreboard scoreboard;
     BluetoothAdapter mblBluetoothAdapter;
     MyBluetoothService myBluetoothService;
+    BackgroundSound mBackgroundSound;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -111,7 +130,8 @@ public class MainActivity extends AppCompatActivity {
 //                },67);
 //            }
 //        });
-        Toast.makeText(this,"activ created",Toast.LENGTH_SHORT).show();
+       // Toast.makeText(this,"activ created",Toast.LENGTH_SHORT).show();
+         mBackgroundSound = new BackgroundSound();
     }
     private void buttonListeners(ImageButton b,final Queue<Integer> q)
     {
@@ -181,18 +201,21 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        mBackgroundSound.execute();
         //Toast.makeText(this,"activ resumed",Toast.LENGTH_SHORT).show();
     }
 
     @Override
     protected void onRestart() {
         super.onRestart();
+
         //Toast.makeText(this,"activ restart",Toast.LENGTH_SHORT).show();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
+       // mBackgroundSound.cancel(true);
         //Toast.makeText(this,"activ paused",Toast.LENGTH_SHORT).show();
     }
 
@@ -212,6 +235,7 @@ public class MainActivity extends AppCompatActivity {
         if (myBluetoothService != null) {
             myBluetoothService.stop();
         }
+        mBackgroundSound.cancel(true);
     }
 
     @Override

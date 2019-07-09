@@ -32,151 +32,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
 
-            <android.support.constraint.ConstraintLayout
 
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="bottom">
-
-
-                <ImageButton
-                    android:id="@+id/left"
-                    android:layout_width="75dp"
-                    android:layout_height="50dp"
-
-                    android:layout_marginBottom="48dp"
-                    android:alpha="100"
-                    android:backgroundTint="#cca7a9ab"
-                    android:text="left"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/right"
-                    app:layout_constraintHorizontal_bias="1.0"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:srcCompat="@drawable/outline_chevron_left_24" />
-
-                <ImageButton
-                    android:id="@+id/right"
-                    android:layout_width="75dp"
-
-                    android:layout_height="50dp"
-                    android:layout_marginBottom="48dp"
-                    android:layout_marginLeft="72dp"
-                    android:layout_marginStart="72dp"
-                    android:backgroundTint="#cca7a9ab"
-                    android:text="right"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:srcCompat="@drawable/outline_chevron_right_24" />
-
-                <ImageButton
-                    android:id="@+id/rotacija"
-                    android:layout_width="75dp"
-                    android:layout_height="75dp"
-
-                    android:layout_marginBottom="4dp"
-                    android:layout_marginEnd="4dp"
-                    android:layout_marginRight="4dp"
-                    android:backgroundTint="#cca7a9ab"
-                    android:scaleType="center"
-                    android:text="Rotiraj"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:srcCompat="@drawable/outline_refresh_24" />
-
-                <ImageButton
-                    android:id="@+id/down"
-                    android:layout_width="75dp"
-                    android:layout_height="50dp"
-
-                    android:layout_marginLeft="38dp"
-                    android:layout_marginStart="38dp"
-                    android:alpha="100"
-                    android:backgroundTint="#cca7a9ab"
-                    android:text="left"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:srcCompat="@drawable/outline_expand_more_24" />
-
-                <android.support.v7.widget.AppCompatTextView
-                    android:id="@+id/hime"
-                    android:layout_width="68dp"
-                    android:layout_height="35dp"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginLeft="176dp"
-                    android:layout_marginStart="176dp"
-                    android:text="@{scoreb.enemyExists ? StringUtil.getTime(scoreb.time) : StringUtil.empty()}"
-                    android:textSize="24sp"
-                    app:fontFamily="@font/bangers"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent" />
-
-                <android.support.v7.widget.AppCompatTextView
-                    android:id="@+id/Score"
-                    android:layout_width="65dp"
-                    android:layout_height="35dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
-                    android:text="Score:"
-                    android:textSize="24sp"
-                    app:fontFamily="@font/bangers"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <android.support.v7.widget.AppCompatTextView
-                    android:id="@+id/scoreNumber"
-                    android:layout_width="68dp"
-                    android:layout_height="35dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="52dp"
-                    android:text="@{String.valueOf(scoreb.score)}"
-                    android:textSize="24sp"
-                    app:fontFamily="@font/bangers"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <android.support.v7.widget.AppCompatTextView
-                    android:id="@+id/gameover"
-                    android:layout_width="0dp"
-                    android:layout_height="104dp"
-                    android:layout_marginTop="84dp"
-                    android:gravity="center"
-                    android:text="@{StringUtil.checkEnding(scoreb.lost,scoreb.enemyLost)}"
-                    android:textColor="#e2FF0000"
-                    android:textSize="50dp"
-                    app:fontFamily="@font/bangers"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <android.support.v7.widget.AppCompatTextView
-                    android:id="@+id/Opponent"
-                    android:layout_width="65dp"
-                    android:layout_height="35dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="104dp"
-                    android:text="@{StringUtil.checkEnemy(scoreb.enemyExists)}"
-                    android:textSize="24sp"
-                    app:fontFamily="@font/bangers"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <android.support.v7.widget.AppCompatTextView
-                    android:id="@+id/scoreEnemy"
-                    android:layout_width="68dp"
-                    android:layout_height="35dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="148dp"
-                    android:text='@{scoreb.enemyExists ? String.valueOf(scoreb.enemyScore) : ""}'
-                    android:textSize="24sp"
-                    app:fontFamily="@font/bangers"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-            </android.support.constraint.ConstraintLayout>
 
             <!--<android.support.constraint.ConstraintLayout-->
                 <!--android:layout_width="match_parent"-->
@@ -253,6 +109,152 @@
             <!--</android.support.constraint.ConstraintLayout>-->
 
         </FrameLayout>
+
+        <android.support.constraint.ConstraintLayout
+
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="bottom">
+
+
+            <ImageButton
+                android:id="@+id/left"
+                android:layout_width="75dp"
+                android:layout_height="50dp"
+
+                android:layout_marginBottom="48dp"
+                android:alpha="100"
+                android:backgroundTint="#cca7a9ab"
+                android:text="left"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/right"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:srcCompat="@drawable/outline_chevron_left_24" />
+
+            <ImageButton
+                android:id="@+id/right"
+                android:layout_width="75dp"
+
+                android:layout_height="50dp"
+                android:layout_marginBottom="48dp"
+                android:layout_marginLeft="72dp"
+                android:layout_marginStart="72dp"
+                android:backgroundTint="#cca7a9ab"
+                android:text="right"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:srcCompat="@drawable/outline_chevron_right_24" />
+
+            <ImageButton
+                android:id="@+id/rotacija"
+                android:layout_width="75dp"
+                android:layout_height="75dp"
+
+                android:layout_marginBottom="4dp"
+                android:layout_marginEnd="4dp"
+                android:layout_marginRight="4dp"
+                android:backgroundTint="#cca7a9ab"
+                android:scaleType="center"
+                android:text="Rotiraj"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:srcCompat="@drawable/outline_refresh_24" />
+
+            <ImageButton
+                android:id="@+id/down"
+                android:layout_width="75dp"
+                android:layout_height="50dp"
+
+                android:layout_marginLeft="38dp"
+                android:layout_marginStart="38dp"
+                android:alpha="100"
+                android:backgroundTint="#cca7a9ab"
+                android:text="left"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:srcCompat="@drawable/outline_expand_more_24" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/hime"
+                android:layout_width="68dp"
+                android:layout_height="35dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginLeft="176dp"
+                android:layout_marginStart="176dp"
+                android:text="@{scoreb.enemyExists ? StringUtil.getTime(scoreb.time) : StringUtil.empty()}"
+                android:textSize="24sp"
+                app:fontFamily="@font/bangers"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/Score"
+                android:layout_width="65dp"
+                android:layout_height="35dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:text="Score:"
+                android:textSize="24sp"
+                app:fontFamily="@font/bangers"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/scoreNumber"
+                android:layout_width="68dp"
+                android:layout_height="35dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="52dp"
+                android:text="@{String.valueOf(scoreb.score)}"
+                android:textSize="24sp"
+                app:fontFamily="@font/bangers"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/gameover"
+                android:layout_width="0dp"
+                android:layout_height="104dp"
+                android:layout_marginTop="84dp"
+                android:gravity="center"
+                android:text="@{StringUtil.checkEnding(scoreb.lost,scoreb.enemyLost)}"
+                android:textColor="#e2FF0000"
+                android:textSize="50dp"
+                app:fontFamily="@font/bangers"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/Opponent"
+                android:layout_width="65dp"
+                android:layout_height="35dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="104dp"
+                android:text="@{StringUtil.checkEnemy(scoreb.enemyExists)}"
+                android:textSize="24sp"
+                app:fontFamily="@font/bangers"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/scoreEnemy"
+                android:layout_width="68dp"
+                android:layout_height="35dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="148dp"
+                android:text='@{scoreb.enemyExists ? String.valueOf(scoreb.enemyScore) : ""}'
+                android:textSize="24sp"
+                app:fontFamily="@font/bangers"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </android.support.constraint.ConstraintLayout>
 
 
     </android.support.constraint.ConstraintLayout>

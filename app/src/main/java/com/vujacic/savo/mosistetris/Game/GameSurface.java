@@ -1,5 +1,6 @@
 package com.vujacic.savo.mosistetris.Game;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -126,7 +127,7 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     public void update(long elapsed)  {
-        long tnow = System.currentTimeMillis();
+//        long tnow = System.currentTimeMillis();
         MatrixConverter b = new MatrixConverter(tetrisGrid2.mainGrid,tetrisGrid2,rules);
         b.start();
 //        StringByteArr sba = StaticQueue.remove();
@@ -283,16 +284,16 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
 //            x+=1;
 //            gm.translate(0,1);
 //        }
-        long tend = System.currentTimeMillis();
-            if(tend-tnow > 16)
-        Log.d("milisek update",String.valueOf(tend-tnow));
+//        long tend = System.currentTimeMillis();
+//            if(tend-tnow > 16)
+//        Log.d("milisek update",String.valueOf(tend-tnow));
     }
 
 
 
     @Override
     public void draw(Canvas canvas)  {
-        long tnow = System.currentTimeMillis();
+//        long tnow = System.currentTimeMillis();
         super.draw(canvas);
         mCanvas.save();
         mCanvas.drawColor(Color.WHITE);
@@ -383,8 +384,8 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
         canvas.drawBitmap(mBitmap,0,0,mBitmapPaint);
         mCanvas.restore();
 //         this.chibi1.draw(canvas);
-        long tend = System.currentTimeMillis();
-            Log.d("milisek draw",String.valueOf(tend-tnow));
+//        long tend = System.currentTimeMillis();
+//            Log.d("milisek draw",String.valueOf(tend-tnow));
     }
 
     // Implements method of SurfaceHolder.Callback

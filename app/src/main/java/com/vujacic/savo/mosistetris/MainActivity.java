@@ -175,31 +175,31 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        Toast.makeText(this,"activ start",Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this,"activ start",Toast.LENGTH_SHORT).show();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        Toast.makeText(this,"activ resumed",Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this,"activ resumed",Toast.LENGTH_SHORT).show();
     }
 
     @Override
     protected void onRestart() {
         super.onRestart();
-        Toast.makeText(this,"activ restart",Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this,"activ restart",Toast.LENGTH_SHORT).show();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        Toast.makeText(this,"activ paused",Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this,"activ paused",Toast.LENGTH_SHORT).show();
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        Toast.makeText(this,"activ stopped",Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this,"activ stopped",Toast.LENGTH_SHORT).show();
     }
 
 
@@ -208,7 +208,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         Client.client.disconnect();
-        Toast.makeText(this,"activ destroyed",Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this,"activ destroyed",Toast.LENGTH_SHORT).show();
         if (myBluetoothService != null) {
             myBluetoothService.stop();
         }
@@ -217,7 +217,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         if (doubleBackToExitPressedOnce) {
-            super.onBackPressed();
+            finish();
+            //super.onBackPressed();
             return;
         }
 

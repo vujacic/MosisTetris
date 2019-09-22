@@ -29,6 +29,7 @@ public class GameThread extends Thread {
                 synchronized (canvas)  {
                     this.gameSurface.update(currentTime-lastTime);
                     this.gameSurface.draw(canvas);
+//                    this.gameSurface.draw2(canvas);
                 }
             }catch(Exception e)  {
                 // Do nothing.

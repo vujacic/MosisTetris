@@ -74,9 +74,11 @@ public class FindPeopleActivity extends AppCompatActivity implements View.OnClic
 
         Button start=(Button)findViewById(R.id.start);
         Button listen=(Button)findViewById(R.id.listen);
+        Button opengl = (Button)findViewById(R.id.jedigovna);
 
         start.setOnClickListener(this);
         listen.setOnClickListener(this);
+        opengl.setOnClickListener(this);
     }
 
     @Override
@@ -155,6 +157,11 @@ public class FindPeopleActivity extends AppCompatActivity implements View.OnClic
     @Override
     public void onClick(View v) {
         switch (v.getId()){
+            case R.id.jedigovna:{
+                Intent i = new Intent(this,MapsActivity.class);
+                startActivity(i);
+                break;
+            }
             case R.id.start:{
 //                Set<BluetoothDevice> pairedDevices =
 //                        mBluetoothAdapter.getBondedDevices();
@@ -188,11 +195,7 @@ public class FindPeopleActivity extends AppCompatActivity implements View.OnClic
 
                 break;
             }
-//            case R.id.editmyplace_location_button:{
-//                Intent i =new Intent(this,MyPlacesMapsActivity.class);
-//                i.putExtra("state",MyPlacesMapsActivity.SELECT_COORDINATES);
-//                startActivityForResult(i,1);
-//            }
+
         }
     }
 

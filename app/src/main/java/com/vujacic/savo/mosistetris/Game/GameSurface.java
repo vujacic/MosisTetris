@@ -23,6 +23,7 @@ import com.vujacic.savo.mosistetris.Bluetooth.connections.StringByteArr;
 import com.vujacic.savo.mosistetris.Game.Helpers.Das;
 import com.vujacic.savo.mosistetris.Game.Helpers.GameRules;
 import com.vujacic.savo.mosistetris.Game.Helpers.MultiplayerRules;
+import com.vujacic.savo.mosistetris.Game.Helpers.PaintObjects;
 import com.vujacic.savo.mosistetris.Game.Helpers.RandomPieceGenerator;
 import com.vujacic.savo.mosistetris.Game.Objects.GameObject;
 import com.vujacic.savo.mosistetris.Game.Objects.ShapeI;
@@ -129,7 +130,7 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     public void update(long elapsed)  {
-//        long tnow = System.currentTimeMillis();
+        long tnow = System.currentTimeMillis();
         MatrixConverter b = new MatrixConverter(tetrisGrid2.mainGrid,tetrisGrid2,rules);
         b.start();
 //        StringByteArr sba = StaticQueue.remove();
@@ -287,16 +288,16 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
 //            x+=1;
 //            gm.translate(0,1);
 //        }
-//        long tend = System.currentTimeMillis();
-//           // if(tend-tnow > 16)
-//        Log.d("milisek update",String.valueOf(tend-tnow));
+        long tend = System.currentTimeMillis();
+           // if(tend-tnow > 16)
+        Log.d("milisek update",String.valueOf(tend-tnow));
     }
 
 
 
     @Override
     public void draw(Canvas canvas)  {
-        //long tnow = System.currentTimeMillis();
+        long tnow = System.currentTimeMillis();
         super.draw(canvas);
         mCanvas.save();
         mCanvas.drawColor(Color.WHITE);
@@ -348,6 +349,10 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
 //            }
 //        }
         tetrisGrid.drawGrid(mCanvas);
+//        mCanvas.drawVertices(Canvas.VertexMode.TRIANGLES,12,new float[]{0,0,0,1,1,0,0,1,1,1,1,0},0,null,0,
+//                new int[]{Color.RED,Color.RED,Color.RED,Color.RED,Color.RED,Color.RED,1,1,1,1,1,1},0,new short[]{0,1,2},0,3,new Paint());
+//        mCanvas.drawVertices(Canvas.VertexMode.TRIANGLES,462,tetrisGrid.vertexArray,0,null,0,
+//                tetrisGrid.colorArray,0,tetrisGrid.indicesArray,0,1200, PaintObjects.PaintColors.grey);
 
 //        mCanvas.restore();
 //        mCanvas.save();
@@ -362,6 +367,8 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
         mCanvas.scale(scaleSw,scaleSh);
 
         tetrisGrid2.drawGrid(mCanvas);
+
+
 
         //mCanvas.translate(5+x,y);
         //mCanvas.rotate(alfa);
@@ -389,8 +396,8 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
         canvas.drawBitmap(mBitmap,0,0,mBitmapPaint);
         mCanvas.restore();
 //         this.chibi1.draw(canvas);
-//        long tend = System.currentTimeMillis();
-//            Log.d("milisek draw",String.valueOf(tend-tnow));
+        long tend = System.currentTimeMillis();
+            Log.d("milisek draw",String.valueOf(tend-tnow));
     }
 
     // Implements method of SurfaceHolder.Callback
@@ -553,4 +560,8 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
 //////            this.gameThread.start();
 ////        }
 //    }
+
+    public void draw2(Canvas canvas)  {
+
+    }
 }

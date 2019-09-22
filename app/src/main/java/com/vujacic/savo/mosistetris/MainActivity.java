@@ -17,6 +17,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Toast;
@@ -42,19 +43,19 @@ import java.util.Queue;
 
 
 public class MainActivity extends AppCompatActivity {
-    public class BackgroundSound extends AsyncTask<Void, Void, Void> {
-
-        @Override
-        protected Void doInBackground(Void... params) {
-            MediaPlayer player = MediaPlayer.create(MainActivity.this, R.raw.tetris_theme);
-            player.setLooping(true); // Set looping
-            player.setVolume(1.0f, 1.0f);
-            player.start();
-
-            return null;
-        }
-
-    }
+//    public class BackgroundSound extends AsyncTask<Void, Void, Void> {
+//
+//        @Override
+//        protected Void doInBackground(Void... params) {
+//            MediaPlayer player = MediaPlayer.create(MainActivity.this, R.raw.tetris_theme);
+//            player.setLooping(true); // Set looping
+//            player.setVolume(1.0f, 1.0f);
+//            player.start();
+//
+//            return null;
+//        }
+//
+//    }
     GameSurface gs;
     GameThread gt;
     int delay;
@@ -63,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
     Scoreboard scoreboard;
     BluetoothAdapter mblBluetoothAdapter;
     MyBluetoothService myBluetoothService;
-    BackgroundSound mBackgroundSound;
+    //BackgroundSound mBackgroundSound;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,6 +78,16 @@ public class MainActivity extends AppCompatActivity {
         handleIntents();
 
         gs=findViewById(R.id.gs);
+//        gs.setLayerType(View.LAYER_TYPE_HARDWARE, null);
+
+        getWindow().setFlags(
+
+
+                WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED,
+
+
+                WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED);
+//        boolean jeste=findViewById(android.R.id.content).isHardwareAccelerated();
         gt=gs.gameThread;
         scoreboard = gs.rules.scoreboard;
         mBinding.setScoreb(scoreboard);
@@ -131,7 +142,7 @@ public class MainActivity extends AppCompatActivity {
 //            }
 //        });
        // Toast.makeText(this,"activ created",Toast.LENGTH_SHORT).show();
-         mBackgroundSound = new BackgroundSound();
+         //mBackgroundSound = new BackgroundSound();
     }
     private void buttonListeners(ImageButton b,final Queue<Integer> q)
     {
@@ -201,7 +212,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        mBackgroundSound.execute();
+        //mBackgroundSound.execute();
         //Toast.makeText(this,"activ resumed",Toast.LENGTH_SHORT).show();
     }
 
@@ -235,7 +246,7 @@ public class MainActivity extends AppCompatActivity {
         if (myBluetoothService != null) {
             myBluetoothService.stop();
         }
-        mBackgroundSound.cancel(true);
+        //mBackgroundSound.cancel(true);
     }
 
     @Override

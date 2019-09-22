@@ -17,6 +17,10 @@ public class TetrisGrid {
     public int[][] mainGrid;
     public int[] lastState = new int[8];
     public float[] lineArray = new float [128];
+    public float[] vertexArray = new float[231*2];
+    public int[] colorArray = new int[462];
+    public short[] indicesArray = new short[1200];
+    public Paint plainPaint = new Paint();
     //uvek +2 jer imamo dve vrste na pocetku
 
     public TetrisGrid() {
@@ -30,6 +34,9 @@ public class TetrisGrid {
         mainGrid = new int[y+2][x];
         yExt = y + 2;
         generateLines();
+//        vertexArray();
+//        indicesArray();
+//        colorArray();
     }
 
     public TetrisGrid(int sizeX, int sizeY) {
@@ -48,6 +55,11 @@ public class TetrisGrid {
                 //canvas.drawRect(i+0.1f,j+0.1f,i+0.9f,j+0.9f,grid[i*y + (j+2)].paintObject);
             }
         }
+//        for (int i=0;i<231;i++){
+//            colorArray[i]=grid[i+20].paintObject.getColor();
+//        }
+//        canvas.drawVertices(Canvas.VertexMode.TRIANGLES,462,vertexArray,0,null,0,
+//                colorArray,0,indicesArray,0,1200, plainPaint);
 //        for(int i = 0;i<x;i++)
 //        {
 //            for(int j=0;j<y;j++)
@@ -86,6 +98,10 @@ public class TetrisGrid {
     public void setOne(int vrsta, int kolona, int one, Paint p) {
         this.mainGrid[vrsta][kolona] = one;
         this.grid[vrsta*x + kolona].paintObject = p;
+//        int pom=vrsta*x+kolona-20;
+//        if(pom<0)
+//            return;
+//        this.colorArray[pom] = p.getColor();
     }
 
     public void setAll(int position[], Paint p) {
@@ -197,6 +213,46 @@ public class TetrisGrid {
                 count++;
             }
         }
+    }
+
+    public void vertexArray(){
+        int count = 0;
+        for(int i=0;i<=20;i++){
+            for(int j=0;j<=10;j++){
+                vertexArray[count] = j;
+                vertexArray[count+1] = i;
+                count+=2;
+            }
+        }
+        int zmaj = count;
+    }
+
+    public void indicesArray(){
+        short count =0;
+        short c = 11;
+        short v = 21;
+        for(short i=0;i<20;i++){
+            for(short j=0;j<10;j++){
+                indicesArray[count] = (short)(i*c + j);
+                indicesArray[count+1] = (short)(indicesArray[count]+c);
+                indicesArray[count+2] =(short) (indicesArray[count]+1);
+                indicesArray[count+3] =(short) indicesArray[count+1];
+                indicesArray[count+4] =(short) (indicesArray[count+2]+c);
+                indicesArray[count+5] =(short) indicesArray[count+2];
+                count+=6;
+            }
+        }
+        short zmaj = count;
+    }
+
+    public void colorArray(){
+        for(int i =0;i<231;i++){
+            colorArray[i]=PaintObjects.PaintColors.grey.getColor();
+        }
+        for(int i =231;i<462;i++){
+            colorArray[i]=-0x1000000;
+        }
+        int count = 0;
     }
 
 }

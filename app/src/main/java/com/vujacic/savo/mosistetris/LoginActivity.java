@@ -3,6 +3,12 @@ package com.vujacic.savo.mosistetris;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 
@@ -18,6 +24,8 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationManagerCompat;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
@@ -28,7 +36,11 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.vujacic.savo.mosistetris.login.MyBroadcastReceiver;
+import com.vujacic.savo.mosistetris.login.Notification;
+import com.vujacic.savo.mosistetris.login.NotificationData;
 import com.vujacic.savo.mosistetris.login.User;
 import com.vujacic.savo.mosistetris.login.UserData;
 
@@ -311,11 +323,43 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
 
             try {
                 UserData ud = UserData.getInstance();
+                NotificationData nd = NotificationData.getInstance();
+                createNotificationChannel();
 
                 ud.setEventListener(new UserData.UserUpdatedListener() {
                     @Override
                     public void onUserUpdated() {
                         semaphore.release();
+                    }
+                });
+
+                nd.setEventListener(new NotificationData.NotUpdatedListener() {
+                    @Override
+                    public void onNotUpdated() {
+                        Notification notification= nd.getNotification();
+                        Intent friendIntent = new Intent(getApplicationContext(), MyBroadcastReceiver.class);
+//                        friendIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        friendIntent.setAction("com.vujacic.savo.mosistetris.FRIEND");
+                        String hey = notification.senderKey;
+                        friendIntent.putExtra("kimes", hey);
+                        PendingIntent friendPending = PendingIntent.getBroadcast(getApplicationContext(), 0 , friendIntent, 0);
+
+
+                        NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(), "kanal")
+                                .setSmallIcon(R.drawable.baseline_account_box_24)
+                                .setContentTitle(notification.title)
+                                .setContentText(notification.content)
+                                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+//                                .setContentIntent(friendPending)
+                                .setAutoCancel(true)
+                                .addAction(R.drawable.outline_chevron_right_24, "Yes", friendPending);
+
+                        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(getApplicationContext());
+
+                        // notificationId is a unique int for each notification that you must define
+                        notificationManager.notify(0, builder.build());
+                        notification.completed = true;
+                        nd.update(notification);
                     }
                 });
 
@@ -334,6 +378,10 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
                 user.mac = android.provider.Settings.Secure.getString(getBaseContext().getContentResolver(), "bluetooth_address");
                 ud.update(user);
 
+                Notification n = createNotification(user);
+                nd.getNotifications();
+//                nd.add(n);
+
             } catch (InterruptedException e) {
                 return false;
             }
@@ -345,6 +393,8 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
 //                    return pieces[1].equals(mPassword);
 //                }
 //            }
+
+
 
 
 
@@ -371,5 +421,33 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
             showProgress(false);
         }
     }
+
+    private Notification createNotification(User usr) {
+        Notification n = new Notification();
+        n.completed = false;
+        n.content = usr.name + " wants to be your friend.";
+        n.userKey = usr.key;
+        n.title = "Friend request";
+        n.type = 0;
+        return n;
+    }
+
+    private void createNotificationChannel() {
+        // Create the NotificationChannel, but only on API 26+ because
+        // the NotificationChannel class is new and not in the support library
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = "zmaj";
+            String description = "zmajevic";
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel("kanal", name, importance);
+            channel.setDescription(description);
+            // Register the channel with the system; you can't change the importance
+            // or other notification behaviors after this
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
+    }
 }
+
+
 

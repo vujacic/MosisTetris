@@ -71,6 +71,14 @@
         <activity
             android:name=".LoginActivity"
             android:label="@string/title_activity_login"></activity>
+
+        <receiver android:name=".login.MyBroadcastReceiver"  android:exported="true" android:enabled="true">
+            <intent-filter>
+                <!--<action android:name="android.intent.action.BOOT_COMPLETED"/>-->
+                <!--<action android:name="android.intent.action.INPUT_METHOD_CHANGED" />-->
+                <action android:name="com.vujacic.savo.mosistetris.FRIEND" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

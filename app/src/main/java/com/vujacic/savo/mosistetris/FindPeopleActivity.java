@@ -35,6 +35,7 @@ import com.vujacic.savo.mosistetris.Bluetooth.connections.SampleDataSentCallback
 import com.vujacic.savo.mosistetris.Bluetooth.connections.StaticQueue;
 import com.vujacic.savo.mosistetris.login.MapData;
 import com.vujacic.savo.mosistetris.login.User;
+import com.vujacic.savo.mosistetris.login.UserData;
 
 import java.util.ArrayList;
 import java.util.Queue;
@@ -50,6 +51,10 @@ public class FindPeopleActivity extends AppCompatActivity implements View.OnClic
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if(UserData.getInstance().getUser() == null) {
+            Intent i = new Intent(this,LoginActivity.class);
+            startActivity(i);
+        }
         setContentView(R.layout.activity_find_people);
 
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);

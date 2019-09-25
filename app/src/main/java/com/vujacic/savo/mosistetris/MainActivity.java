@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Service;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.databinding.DataBindingUtil;
@@ -13,6 +14,7 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.os.ParcelUuid;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MotionEvent;
@@ -38,6 +40,10 @@ import com.vujacic.savo.mosistetris.Game.GameSurface;
 import com.vujacic.savo.mosistetris.Game.GameThread;
 import com.vujacic.savo.mosistetris.Game.Helpers.Scoreboard;
 import com.vujacic.savo.mosistetris.databinding.ActivityMainBinding;
+import com.vujacic.savo.mosistetris.login.MapData;
+import com.vujacic.savo.mosistetris.login.Notification;
+import com.vujacic.savo.mosistetris.login.NotificationData;
+import com.vujacic.savo.mosistetris.login.UserData;
 
 import java.util.Queue;
 
@@ -252,7 +258,43 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         if (doubleBackToExitPressedOnce) {
-            finish();
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+            builder.setTitle("Friend request");
+            builder.setMessage("Send friend request?");
+
+            builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+
+                public void onClick(DialogInterface dialog, int which) {
+                    // Do nothing but close the dialog
+                    Notification n = new Notification();
+                    n.completed = false;
+                    n.content = UserData.getInstance().getUser().name + " wants to be your friend.";
+                    n.senderKey = UserData.getInstance().getUser().key;
+                    n.userKey = MapData.getInstance().getCloseUsers().get(0).key;
+                    n.title = "Friend request";
+                    n.type = 0;
+
+                    NotificationData.getInstance().add(n);
+                    dialog.dismiss();
+                    finish();
+                }
+            });
+
+            builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+
+                    // Do nothing
+                    dialog.dismiss();
+                    finish();
+                }
+            });
+
+            AlertDialog alert = builder.create();
+            alert.show();
+            //finish();
             //super.onBackPressed();
             return;
         }

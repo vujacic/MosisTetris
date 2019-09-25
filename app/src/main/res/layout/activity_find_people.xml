@@ -48,10 +48,15 @@
         android:id="@+id/mapa"
         android:layout_width="187dp"
         android:layout_height="89dp"
-        android:text="mapa"
+        android:layout_marginEnd="50dp"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp"
+        android:layout_marginStart="50dp"
+        android:text="map"
         android:textSize="30dp"
         app:fontFamily="@font/bangers"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
@@ -95,14 +100,9 @@
         android:id="@+id/jedigovna"
         android:layout_width="187dp"
         android:layout_height="89dp"
-        android:layout_marginBottom="186dp"
-        android:layout_marginEnd="50dp"
-        android:layout_marginLeft="50dp"
-        android:layout_marginRight="50dp"
-        android:layout_marginStart="50dp"
-        android:layout_marginTop="59dp"
         android:text="opengl"
         android:textSize="30dp"
+        android:visibility="gone"
         app:fontFamily="@font/bangers" />
 
 

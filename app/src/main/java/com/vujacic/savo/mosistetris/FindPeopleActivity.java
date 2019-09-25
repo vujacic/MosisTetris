@@ -12,11 +12,14 @@ import android.os.ParcelUuid;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.newtronlabs.easybluetooth.BluetoothClient;
 import com.newtronlabs.easybluetooth.BluetoothServer;
 import com.newtronlabs.easybluetooth.IBluetoothClient;
@@ -30,6 +33,8 @@ import com.vujacic.savo.mosistetris.Bluetooth.connections.SampleConnectionFailed
 import com.vujacic.savo.mosistetris.Bluetooth.connections.SampleDataCallback;
 import com.vujacic.savo.mosistetris.Bluetooth.connections.SampleDataSentCallback;
 import com.vujacic.savo.mosistetris.Bluetooth.connections.StaticQueue;
+import com.vujacic.savo.mosistetris.login.MapData;
+import com.vujacic.savo.mosistetris.login.User;
 
 import java.util.ArrayList;
 import java.util.Queue;
@@ -75,10 +80,27 @@ public class FindPeopleActivity extends AppCompatActivity implements View.OnClic
         Button start=(Button)findViewById(R.id.start);
         Button listen=(Button)findViewById(R.id.listen);
         Button opengl = (Button)findViewById(R.id.jedigovna);
+        Button map = findViewById(R.id.mapa);
 
         start.setOnClickListener(this);
         listen.setOnClickListener(this);
         opengl.setOnClickListener(this);
+        map.setOnClickListener(this);
+
+        try{
+            Intent mapIntent=getIntent();
+            Bundle mapBundle=mapIntent.getExtras();
+            if(mapBundle!=null){
+                String position = mapBundle.getString("position");
+                if(!TextUtils.isEmpty(position)){
+                    //ArrayList<User> users= MapData.getInstance().getCloseUsers();
+                    listen.callOnClick();
+                }
+            }
+        }catch (Exception e){
+            Log.d("Neki error","neki eror");
+        }
+
     }
 
     @Override
@@ -88,7 +110,7 @@ public class FindPeopleActivity extends AppCompatActivity implements View.OnClic
             String address = BT.getAddress();
             String name = BT.getName();
             String toastText = name + " : " + address;
-            Toast.makeText(this, toastText, Toast.LENGTH_LONG).show();
+            Toast.makeText(getBaseContext(), toastText, Toast.LENGTH_LONG).show();
         }
         if(requestCode == SELECT_SERVER && resultCode == Activity.RESULT_OK) {
             try{
@@ -132,8 +154,9 @@ public class FindPeopleActivity extends AppCompatActivity implements View.OnClic
                     "EasyBtService", ParcelUuid.fromString("24001101-0000-1000-8000-00805F9B34FB"))
                     .build();
             if(btSer == null) {
-                Toast.makeText(this,"Ne moze se napravi server",Toast.LENGTH_SHORT);
+                Toast.makeText(getBaseContext(),"Ne moze se napravi server",Toast.LENGTH_SHORT).show();
             } else {
+//                Toast.makeText(getBaseContext(),android.provider.Settings.Secure.getString(getBaseContext().getContentResolver(), "bluetooth_address"),Toast.LENGTH_LONG).show();
                 // Block until a client connects.
                 Client.client = btSer.accept();
                 // Set a data callback to receive data from the remote device.
@@ -158,7 +181,7 @@ public class FindPeopleActivity extends AppCompatActivity implements View.OnClic
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.jedigovna:{
-                Intent i = new Intent(this,MapsActivity.class);
+                Intent i = new Intent(this,LoginActivity.class);
                 startActivity(i);
                 break;
             }
@@ -193,6 +216,11 @@ public class FindPeopleActivity extends AppCompatActivity implements View.OnClic
 //                    at.cancel();
 //                }
 
+                break;
+            }
+            case R.id.mapa: {
+                Intent i = new Intent(this,MapsActivity.class);
+                startActivity(i);
                 break;
             }
 

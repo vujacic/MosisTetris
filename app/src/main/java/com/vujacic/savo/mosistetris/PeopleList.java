@@ -17,6 +17,8 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.vujacic.savo.mosistetris.Bluetooth.ConnectThread;
+import com.vujacic.savo.mosistetris.login.MapData;
+import com.vujacic.savo.mosistetris.login.User;
 
 import java.util.ArrayList;
 
@@ -83,7 +85,14 @@ public class PeopleList extends AppCompatActivity {
                 BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
                 String deviceName = device.getName();
                 String deviceHardwareAddress = device.getAddress(); // MAC address
-                devices.add(deviceName + "\n" + deviceHardwareAddress);
+                ArrayList<User> users = MapData.getInstance().getCloseUsers();
+                String name = "";
+                for(User user : users) {
+                    if(user.mac.equals(deviceHardwareAddress)) {
+                        name = user.name;
+                    }
+                }
+                devices.add(deviceName + "    Player: " + name + "\n" + deviceHardwareAddress);
                 setList();
             }
         }
